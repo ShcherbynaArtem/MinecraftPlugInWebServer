@@ -344,5 +344,190 @@ namespace DataAccess
         }
 
         #endregion bundle product actions
+
+        #region department actions
+
+        public async Task<int> CreateDepartment(DepartmentEntity departmentEntity)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                int rowsAffected = await connection.ExecuteAsync
+                    ("INSERT INTO departments (id, name, description) VALUES (@Id, @Name, @Description)",
+                    new { Id = departmentEntity.id, Name = departmentEntity.name, Description = departmentEntity.description });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        public async Task<int> UpdateDepartment(DepartmentEntity departmentEntity)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                int rowsAffected = await connection.ExecuteAsync
+                    ("UPDATE departments SET name = @Name, description = @Description WHERE id = @Id",
+                    new { Id = departmentEntity.id, Name = departmentEntity.name, Description = departmentEntity.description });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        public async Task<int> DeleteDepartment(int id)
+        {
+            try
+            {
+                var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var rowsAffected = await connection.ExecuteAsync
+                    ("DELETE FROM departments WHERE id = @Id", new { Id = id });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        public async Task<DepartmentEntity> GetDepartmentById(int id)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var department = await connection.QuerySingleAsync<DepartmentEntity>
+                    (@"SELECT id, name, description FROM departments WHERE id = @Id",
+                    new { Id = id });
+
+                return (DepartmentEntity)department;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new DepartmentEntity();
+            }
+        }
+
+        public async Task<List<DepartmentEntity>> GetDepartments()
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var departments = await connection.QueryAsync<DepartmentEntity>
+                    ("SELECT id, name, description FROM departments");
+
+                return (List<DepartmentEntity>)departments;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<DepartmentEntity>();
+            }
+        }
+
+        #endregion department actions
+
+        #region product type actions
+
+        public async Task<int> CreateProductType(ProductTypeEntity productTypeEntity)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                int rowsAffected = await connection.ExecuteAsync
+                    ("INSERT INTO product_types (id, name, department) VALUES (@Id, @Name, @Department)",
+                    new { Id = productTypeEntity.id, Name = productTypeEntity.name, Department = productTypeEntity.department });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        public async Task<int> UpdateProductType(ProductTypeEntity productTypeEntity)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                int rowsAffected = await connection.ExecuteAsync
+                    ("UPDATE product_types SET name = @Name, department = @Department WHERE id = @Id",
+                   new { Id = productTypeEntity.id, Name = productTypeEntity.name, Department = productTypeEntity.department });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        public async Task<int> DeleteProductType(int id)
+        {
+            try
+            {
+                var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var rowsAffected = await connection.ExecuteAsync
+                    ("DELETE FROM product_types WHERE id = @Id", new { Id = id });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        public async Task<ProductTypeEntity> GetProductTypeById(int id)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var productType = await connection.QuerySingleAsync<ProductTypeEntity>
+                    (@"SELECT id, name, department FROM 
+                   product_types WHERE id = @Id",
+                    new { Id = id });
+
+                return (ProductTypeEntity)productType;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new ProductTypeEntity();
+            }
+        }
+
+        public async Task<List<ProductTypeEntity>> GetProductTypes()
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var products = await connection.QueryAsync<ProductTypeEntity>
+                    ("SELECT id, name, department FROM product_types");
+
+                return (List<ProductTypeEntity>)products;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<ProductTypeEntity>();
+            }
+        }
+
+        #endregion product type actions
     }
 }

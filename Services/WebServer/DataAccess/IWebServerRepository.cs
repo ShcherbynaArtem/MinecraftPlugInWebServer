@@ -46,5 +46,24 @@ namespace DataAccess
 
         #endregion bundle product actions
 
+        #region department actions
+
+        Task<int> CreateDepartment(DepartmentEntity userEntity);
+        Task<int> UpdateDepartment(DepartmentEntity userEntity);
+        Task<int> DeleteDepartment(int id);
+        Task<DepartmentEntity> GetDepartmentById(int id);
+        Task<List<DepartmentEntity>> GetDepartments();
+
+        #endregion department actions
+
+        #region product type actions
+
+        Task<int> CreateProductType(ProductTypeEntity productTypeEntity);
+        Task<int> UpdateProductType(ProductTypeEntity productTypeEntity);
+        Task<int> DeleteProductType(int id);
+        Task<ProductTypeEntity> GetProductTypeById(int id);
+        Task<List<ProductTypeEntity>> GetProductTypes();
+
+        #endregion product type actions
     }
 }

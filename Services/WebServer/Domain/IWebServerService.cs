@@ -34,10 +34,30 @@ namespace Domain
         #endregion bundle actions
 
         #region bundle product actions
-        
+
         Task<bool> AddProductToBundle(BundleProductDTO bundleProductDTO);
         Task<bool> DeleteProductFromBundle(BundleProductDTO bundleProductDTO);
 
         #endregion bundle product actions
+
+        #region department actions
+
+        Task<bool> CreateDepartment(CreateDepartmentDTO departmentDTO);
+        Task<GetDepartmentDTO> GetDepartment(int id);
+        Task<bool> UpdateDepartment(UpdateDepartmentDTO departmentDTO);
+        Task<bool> DeleteDepartment(int id);
+        Task<List<GetDepartmentDTO>> GetDepartments();
+
+        #endregion department actions
+
+        #region product type actions
+
+        Task<bool> CreateProductType(CreateProductTypeDTO userDTO);
+        Task<bool> UpdateProductType(UpdateProductTypeDTO userDTO);
+        Task<bool> DeleteProductType(int id);
+        Task<GetProductTypeDTO> GetProductType(int id);
+        Task<List<GetProductTypeDTO>> GetProductTypes();
+
+        #endregion product type actions
     }
 }

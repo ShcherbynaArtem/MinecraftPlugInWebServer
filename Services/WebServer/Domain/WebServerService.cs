@@ -210,5 +210,109 @@ namespace Domain
         }
 
         #endregion bundle product actions
+
+        #region department actions
+
+        public async Task<bool> CreateDepartment(CreateDepartmentDTO departmentDTO)
+        {
+            DepartmentEntity departmentEntity = _mapper.Map<DepartmentEntity>(departmentDTO);
+            int rowsAffected = await _appServerRepo.CreateDepartment(departmentEntity);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+
+        public async Task<GetDepartmentDTO> GetDepartment(int id)
+        {
+            DepartmentEntity departmentEntity = await _appServerRepo.GetDepartmentById(id);
+            if (!string.IsNullOrEmpty(departmentEntity.name))
+            {
+                GetDepartmentDTO departmentDTO = _mapper.Map<GetDepartmentDTO>(departmentEntity);
+                return departmentDTO;
+            }
+            return new GetDepartmentDTO();
+        }
+
+        public async Task<bool> UpdateDepartment(UpdateDepartmentDTO departmentDTO)
+        {
+            DepartmentEntity departmentEntity = _mapper.Map<DepartmentEntity>(departmentDTO);
+            int rowsAffected = await _appServerRepo.UpdateDepartment(departmentEntity);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+
+        public async Task<bool> DeleteDepartment(int id)
+        {
+            int rowsAffected = await _appServerRepo.DeleteDepartment(id);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+
+        public async Task<List<GetDepartmentDTO>> GetDepartments()
+        {
+            List<DepartmentEntity> departmentEntities = await _appServerRepo.GetDepartments();
+            List<GetDepartmentDTO> departmentDTOs = new List<GetDepartmentDTO>();
+            foreach (DepartmentEntity departmentEntity in departmentEntities)
+            {
+                departmentDTOs.Add(_mapper.Map<GetDepartmentDTO>(departmentEntity));
+            }
+            return departmentDTOs;
+        }
+
+        #endregion department actions
+
+        #region product type actions
+
+        public async Task<bool> CreateProductType(CreateProductTypeDTO productTypeDTO)
+        {
+            ProductTypeEntity productTypeEntity = _mapper.Map<ProductTypeEntity>(productTypeDTO);
+            int rowsAffected = await _appServerRepo.CreateProductType(productTypeEntity);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+
+        public async Task<bool> UpdateProductType(UpdateProductTypeDTO productTypeDTO)
+        {
+            ProductTypeEntity productTypeEntity = _mapper.Map<ProductTypeEntity>(productTypeDTO);
+            int rowsAffected = await _appServerRepo.UpdateProductType(productTypeEntity);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+
+        public async Task<bool> DeleteProductType(int id)
+        {
+            int rowsAffected = await _appServerRepo.DeleteProductType(id);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+
+        public async Task<GetProductTypeDTO> GetProductType(int id)
+        {
+            ProductTypeEntity productTypeEntity = await _appServerRepo.GetProductTypeById(id);
+            if (!string.IsNullOrEmpty(productTypeEntity.name))
+            {
+                GetProductTypeDTO productTypeDTO = _mapper.Map<GetProductTypeDTO>(productTypeEntity);
+                return productTypeDTO;
+            }
+            return new GetProductTypeDTO();
+        }
+
+        public async Task<List<GetProductTypeDTO>> GetProductTypes()
+        {
+            List<ProductTypeEntity> productTypeEntities = await _appServerRepo.GetProductTypes();
+            List<GetProductTypeDTO> productTypeDTOs = new List<GetProductTypeDTO>();
+            foreach (ProductTypeEntity productTypeEntity in productTypeEntities)
+            {
+                productTypeDTOs.Add(_mapper.Map<GetProductTypeDTO>(productTypeEntity));
+            }
+            return productTypeDTOs;
+        }
+
+        #endregion product type actions
     }
 }
