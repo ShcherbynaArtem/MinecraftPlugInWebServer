@@ -8,8 +8,8 @@ namespace DataTransferObjects
 {
     public class CreateProductTypeDTO
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int department { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Department { get; set; }
     }
 }

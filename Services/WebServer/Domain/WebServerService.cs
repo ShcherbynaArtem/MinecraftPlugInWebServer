@@ -2,12 +2,6 @@
 using DataAccess;
 using DataTransferObjects;
 using Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain
 {
@@ -24,7 +18,7 @@ namespace Domain
 
         #region user actions
 
-        public async Task<bool> CreateUser(UserDTO userDTO)
+        public async Task<bool> CreateUser(CreateUserDTO userDTO)
         {
             UserEntity userEntity = _mapper.Map<UserEntity>(userDTO);
             int rowsAffected = await _appServerRepo.CreateUser(userEntity);
@@ -33,18 +27,18 @@ namespace Domain
             return false;
         }
 
-        public async Task<UserDTO> GetUser(Guid id)
+        public async Task<GetUserDTO> GetUser(Guid id)
         {
             UserEntity userEntity = await _appServerRepo.GetUserById(id);
-            if(!string.IsNullOrEmpty(userEntity.username))
+            if(!string.IsNullOrEmpty(userEntity.Username))
             {
-                UserDTO userDTO = _mapper.Map<UserDTO>(userEntity);
+                GetUserDTO userDTO = _mapper.Map<GetUserDTO>(userEntity);
                 return userDTO;
             }
-            return new UserDTO();
+            return new GetUserDTO();
         }
 
-        public async Task<bool> UpdateUser(UserDTO userDTO)
+        public async Task<bool> UpdateUser(UpdateUserDTO userDTO)
         {
             UserEntity userEntity = _mapper.Map<UserEntity>(userDTO);
             int rowsAffected = await _appServerRepo.UpdateUser(userEntity);
@@ -65,7 +59,7 @@ namespace Domain
 
         #region product actions
 
-        public async Task<bool> CreateProduct(ProductDTO productDTO)
+        public async Task<bool> CreateProduct(CreateProductDTO productDTO)
         {
             ProductEntity productEntity = _mapper.Map<ProductEntity>(productDTO);
             int rowsAffected = await _appServerRepo.CreateProduct(productEntity);
@@ -74,7 +68,7 @@ namespace Domain
             return false;
         }
 
-        public async Task<bool> UpdateProduct(ProductDTO productDTO)
+        public async Task<bool> UpdateProduct(UpdateProductDTO productDTO)
         {
             ProductEntity productEntity = _mapper.Map<ProductEntity>(productDTO);
             int rowsAffected = await _appServerRepo.UpdateProduct(productEntity);
@@ -91,24 +85,24 @@ namespace Domain
             return false;
         }
 
-        public async Task<ProductDTO> GetProduct(Guid id)
+        public async Task<GetProductDTO> GetProduct(Guid id)
         {
             ProductEntity productEntity = await _appServerRepo.GetProductById(id);
-            if (!string.IsNullOrEmpty(productEntity.name))
+            if (!string.IsNullOrEmpty(productEntity.Name))
             {
-                ProductDTO productDTO = _mapper.Map<ProductDTO>(productEntity);
+                GetProductDTO productDTO = _mapper.Map<GetProductDTO>(productEntity);
                 return productDTO;
             }
-            return new ProductDTO();
+            return new GetProductDTO();
         }
 
-        public async Task<List<ProductDTO>> GetProducts()
+        public async Task<List<GetProductDTO>> GetProducts()
         {
             List<ProductEntity> productEntities = await _appServerRepo.GetProducts();
-            List<ProductDTO> productDTOs = new List<ProductDTO>();
+            List<GetProductDTO> productDTOs = new List<GetProductDTO>();
             foreach (ProductEntity productEntity in productEntities)
             {
-                productDTOs.Add(_mapper.Map<ProductDTO>(productEntity));
+                productDTOs.Add(_mapper.Map<GetProductDTO>(productEntity));
             }
             return productDTOs;
         }
@@ -117,14 +111,14 @@ namespace Domain
 
         #region bundle actions
 
-        public async Task<bool> CreateBundle(BundleDTO bundleDTO)
+        public async Task<bool> CreateBundle(CreateBundleDTO bundleDTO)
         {
             BundleEntity bundleEntity = _mapper.Map<BundleEntity>(bundleDTO);
             Guid createdBundleId = await _appServerRepo.CreateBundle(bundleEntity);
             if (createdBundleId == Guid.Empty)
                 return false;
 
-            if(!await AddProductsToBundle(bundleEntity.id, bundleEntity.product_ids))
+            if(!await AddProductsToBundle(bundleEntity.Id, bundleEntity.ProductIds))
             {
                 Console.WriteLine("Products addition failed!");
             }
@@ -132,7 +126,7 @@ namespace Domain
             return true;
         }
 
-        public async Task<bool> UpdateBundle(BundleDTO bundleDTO)
+        public async Task<bool> UpdateBundle(UpdateBundleDTO bundleDTO)
         {
             BundleEntity bundleEntity = _mapper.Map<BundleEntity>(bundleDTO);
             int rowsAffected = await _appServerRepo.UpdateBundle(bundleEntity);
@@ -143,32 +137,30 @@ namespace Domain
 
         public async Task<bool> DeleteBundle(Guid id)
         {
-            //ADD CASCADE DELETION
-
             int rowsAffected = await _appServerRepo.DeleteBundle(id);
             if (rowsAffected == 0)
                 return false;
             return true;
         }
 
-        public async Task<BundleDTO> GetBundle(Guid id)
+        public async Task<GetBundleDTO> GetBundle(Guid id)
         {
             BundleEntity bundleEntity = await _appServerRepo.GetBundleById(id);
-            if (!string.IsNullOrEmpty(bundleEntity.name))
+            if (!string.IsNullOrEmpty(bundleEntity.Name))
             {
-                BundleDTO bundleDTO = _mapper.Map<BundleDTO>(bundleEntity);
+                GetBundleDTO bundleDTO = _mapper.Map<GetBundleDTO>(bundleEntity);
                 return bundleDTO;
             }
-            return new BundleDTO();
+            return new GetBundleDTO();
         }
 
-        public async Task<List<BundleDTO>> GetBundles()
+        public async Task<List<GetBundleDTO>> GetBundles()
         {
             List<BundleEntity> bundleEntities = await _appServerRepo.GetBundles();
-            List<BundleDTO> bundleDTOs = new List<BundleDTO>();
+            List<GetBundleDTO> bundleDTOs = new List<GetBundleDTO>();
             foreach (BundleEntity bundleEntity in bundleEntities)
             {
-                bundleDTOs.Add(_mapper.Map<BundleDTO>(bundleEntity));
+                bundleDTOs.Add(_mapper.Map<GetBundleDTO>(bundleEntity));
             }
 
             return bundleDTOs;
@@ -178,7 +170,7 @@ namespace Domain
 
         #region bundle product actions
 
-        public async Task<bool> AddProductToBundle(BundleProductDTO bundleProductDTO)
+        public async Task<bool> AddProductToBundle(CreateBundleProductDTO bundleProductDTO)
         {
             BundleProductEntity bundleProductEntity = _mapper.Map<BundleProductEntity>(bundleProductDTO);
             int rowsAffected = await _appServerRepo.AddProductToBundle(bundleProductEntity);
@@ -186,10 +178,9 @@ namespace Domain
                 return true;
             return false;
         }
-        public async Task<bool> DeleteProductFromBundle(BundleProductDTO bundleProductDTO)
+        public async Task<bool> DeleteProductFromBundle(Guid id)
         {
-            BundleProductEntity bundleProductEntity = _mapper.Map<BundleProductEntity>(bundleProductDTO);
-            int rowsAffected = await _appServerRepo.DeleteProductFromBundle(bundleProductEntity);
+            int rowsAffected = await _appServerRepo.DeleteProductFromBundle(id);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -225,7 +216,7 @@ namespace Domain
         public async Task<GetDepartmentDTO> GetDepartment(int id)
         {
             DepartmentEntity departmentEntity = await _appServerRepo.GetDepartmentById(id);
-            if (!string.IsNullOrEmpty(departmentEntity.name))
+            if (!string.IsNullOrEmpty(departmentEntity.Name))
             {
                 GetDepartmentDTO departmentDTO = _mapper.Map<GetDepartmentDTO>(departmentEntity);
                 return departmentDTO;
@@ -294,7 +285,7 @@ namespace Domain
         public async Task<GetProductTypeDTO> GetProductType(int id)
         {
             ProductTypeEntity productTypeEntity = await _appServerRepo.GetProductTypeById(id);
-            if (!string.IsNullOrEmpty(productTypeEntity.name))
+            if (!string.IsNullOrEmpty(productTypeEntity.Name))
             {
                 GetProductTypeDTO productTypeDTO = _mapper.Map<GetProductTypeDTO>(productTypeEntity);
                 return productTypeDTO;

@@ -1,5 +1,5 @@
-﻿using DataTransferObjects;
-using Domain;
+﻿using Domain;
+using DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebServerApi.Controllers
@@ -16,23 +16,19 @@ namespace WebServerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> AddProductToBundle(BundleProductDTO bundleProductDTO)
+        public async Task<ActionResult> AddProductToBundle(CreateBundleProductDTO bundleProductDTO)
         {
-            bool isProductAdded = await _appServerService.AddProductToBundle(bundleProductDTO);
-            if (isProductAdded)
-                return Ok(isProductAdded);
-            return BadRequest(isProductAdded);
+            if (await _appServerService.AddProductToBundle(bundleProductDTO))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteProductFromBundle(BundleProductDTO bundleProductDTO)
+        public async Task<ActionResult> DeleteProductFromBundle(Guid id)
         {
-            bool isProductDeleted = await _appServerService.DeleteProductFromBundle(bundleProductDTO);
-            if (isProductDeleted)
-            {
-                return Ok(isProductDeleted);
-            }
-            return BadRequest(isProductDeleted);
+            if (await _appServerService.DeleteProductFromBundle(id))
+                return Ok();
+            return BadRequest();
         }
     }
 }

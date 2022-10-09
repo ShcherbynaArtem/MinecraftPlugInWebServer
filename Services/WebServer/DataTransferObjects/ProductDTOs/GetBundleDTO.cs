@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace DataTransferObjects
 {
-    public class UpdateProductTypeDTO
+    public class GetProductDTO
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        public int Department { get; set; }
+        public string Description { get; set; }
+        public int Type { get; set; }
+        public double Price { get; set; }
     }
 }

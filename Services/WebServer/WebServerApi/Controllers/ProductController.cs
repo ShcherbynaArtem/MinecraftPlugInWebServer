@@ -16,45 +16,40 @@ namespace WebServerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> CreateProduct(ProductDTO productDTO)
+        public async Task<ActionResult> CreateProduct(CreateProductDTO productDTO)
         {
-            bool isProductCreated = await _appServerService.CreateProduct(productDTO);
-            if (isProductCreated)
-                return Ok(isProductCreated);
-            return BadRequest(isProductCreated);
+            if (await _appServerService.CreateProduct(productDTO))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpPut]
-        public async Task<ActionResult<bool>> UpdateProduct(ProductDTO productDTO)
+        public async Task<ActionResult> UpdateProduct(UpdateProductDTO productDTO)
         {
-            bool isProductUpdated = await _appServerService.UpdateProduct(productDTO);
-            if (isProductUpdated)
-                return Ok(isProductUpdated);
-            return BadRequest(isProductUpdated);
+            if (await _appServerService.UpdateProduct(productDTO))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteProduct(Guid id)
+        public async Task<ActionResult> DeleteProduct(Guid id)
         {
-            bool isProductDeleted = await _appServerService.DeleteProduct(id);
-            if (isProductDeleted)
-            {
-                return Ok(isProductDeleted);
-            }
-            return BadRequest(isProductDeleted);
+            if (await _appServerService.DeleteProduct(id))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDTO>> GetProduct(Guid id)
+        public async Task<ActionResult<GetProductDTO>> GetProduct(Guid id)
         {
-            ProductDTO productDTO = await _appServerService.GetProduct(id);
+            GetProductDTO productDTO = await _appServerService.GetProduct(id);
             return Ok(productDTO);
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductDTO>> GetProducts()
+        public async Task<ActionResult<GetProductDTO>> GetProducts()
         {
-            List<ProductDTO> productDTOs = await _appServerService.GetProducts();
+            List<GetProductDTO> productDTOs = await _appServerService.GetProducts();
             return Ok(productDTOs);
         }
     }

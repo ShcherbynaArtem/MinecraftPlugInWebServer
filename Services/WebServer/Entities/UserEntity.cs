@@ -2,10 +2,10 @@
 {
     public class UserEntity
     {
-        public Guid id { get; set; }
-        public string username { get; set; }
-        public string email { get; set; }
-        public string ip { get; set; }
-        public int lives { get; set; }
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Ip { get; set; }
+        public int Lives { get; set; }
     }
 }

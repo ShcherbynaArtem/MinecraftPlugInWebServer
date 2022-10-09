@@ -16,48 +16,41 @@ namespace WebServerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> CreateBundle(BundleDTO bundleDTO)
+        public async Task<ActionResult> CreateBundle(CreateBundleDTO bundleDTO)
         {
-            bool isBundleCreated = await _appServerService.CreateBundle(bundleDTO);
-            if (isBundleCreated)
-                return Ok(isBundleCreated);
-            return BadRequest(isBundleCreated);
+            if (await _appServerService.CreateBundle(bundleDTO))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpPut]
-        public async Task<ActionResult<bool>> UpdateBundle(BundleDTO bundleDTO)
+        public async Task<ActionResult> UpdateBundle(UpdateBundleDTO bundleDTO)
         {
-            bool isBundleUpdated = await _appServerService.UpdateBundle(bundleDTO);
-            if (isBundleUpdated)
-                return Ok(isBundleUpdated);
-            return BadRequest(isBundleUpdated);
+            if(await _appServerService.UpdateBundle(bundleDTO))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteBundle(Guid id)
+        public async Task<ActionResult> DeleteBundle(Guid id)
         {
-            bool isBundleDeleted = await _appServerService.DeleteBundle(id);
-            if (isBundleDeleted)
-            {
-                return Ok(isBundleDeleted);
-            }
-            return BadRequest(isBundleDeleted);
+            if (await _appServerService.DeleteBundle(id))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BundleDTO>> GetBundle(Guid id)
+        public async Task<ActionResult<GetBundleDTO>> GetBundle(Guid id)
         {
-            BundleDTO bundleDTO = await _appServerService.GetBundle(id);
+            GetBundleDTO bundleDTO = await _appServerService.GetBundle(id);
             return Ok(bundleDTO);
         }
 
         [HttpGet]
-        public async Task<ActionResult<BundleDTO>> GetBundles()
+        public async Task<ActionResult<GetBundleDTO>> GetBundles()
         {
-            List<BundleDTO> bundleDTOs = await _appServerService.GetBundles();
+            List<GetBundleDTO> bundleDTOs = await _appServerService.GetBundles();
             return Ok(bundleDTOs);
         }
-
-
     }
 }

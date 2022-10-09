@@ -8,13 +8,13 @@ namespace Entities
 {
     public class BundleProductEntity
     {
-        public Guid bundle_id { get; set; }
-        public Guid product_id { get; set; }
+        public Guid BundleId { get; set; }
+        public Guid ProductId { get; set; }
 
         public BundleProductEntity(Guid bundle_id, Guid product_id)
         {
-            this.bundle_id = bundle_id;
-            this.product_id = product_id;
+            this.BundleId = bundle_id;
+            this.ProductId = product_id;
         }   
     }
 }

@@ -18,45 +18,34 @@ namespace WebServerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> CreateUser(UserDTO userDTO)
+        public async Task<ActionResult> CreateUser(CreateUserDTO userDTO)
         {
-            bool isUserCreated = await _appServerService.CreateUser(userDTO);
-            if (isUserCreated)
-            {
-                return Ok(isUserCreated);
-            }
-            return BadRequest(isUserCreated);
+            if (await _appServerService.CreateUser(userDTO))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpPut]
-        public async Task<ActionResult<bool>> UpdateUser(UserDTO userDTO)
+        public async Task<ActionResult> UpdateUser(UpdateUserDTO userDTO)
         {
-            bool isUserUpdated = await _appServerService.UpdateUser(userDTO);
-            if (isUserUpdated)
-            {
-                return Ok(isUserUpdated);
-            }
-            return BadRequest(isUserUpdated);
+            if (await _appServerService.UpdateUser(userDTO))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteUser(Guid id)
+        public async Task<ActionResult> DeleteUser(Guid id)
         {
-            bool isUserDeleted = await _appServerService.DeleteUser(id);
-            if (isUserDeleted)
-            {
-                return Ok(isUserDeleted);
-            }
-            return BadRequest(isUserDeleted);
+            if (await _appServerService.DeleteUser(id))
+                return Ok();
+            return BadRequest();
         }
 
         [HttpGet]
-        public async Task<ActionResult<UserDTO>> GetUser(Guid id)
+        public async Task<ActionResult<GetUserDTO>> GetUser(Guid id)
         {
-            UserDTO userDTO = await _appServerService.GetUser(id);
+            GetUserDTO userDTO = await _appServerService.GetUser(id);
             return Ok(userDTO);
         }
-
-        
     }
 }

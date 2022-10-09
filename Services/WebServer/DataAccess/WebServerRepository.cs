@@ -27,7 +27,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("INSERT INTO users (id, username, email, ip) VALUES (@Id, @Username, @Email, @Ip)",
-                    new { Id = userEntity.id, Username = userEntity.username, Email = userEntity.email, Ip = userEntity.ip });
+                    new { Id = userEntity.Id, Username = userEntity.Username, Email = userEntity.Email, Ip = userEntity.Ip });
 
                 return rowsAffected;
             }
@@ -46,7 +46,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("UPDATE users SET username = @Username, email = @Email, ip = @Ip, lives = @Lives WHERE id = @Id",
-                    new { Id = userEntity.id, Username = userEntity.username, Email = userEntity.email, Ip = userEntity.ip, Lives = userEntity.lives });
+                    new { Id = userEntity.Id, Username = userEntity.Username, Email = userEntity.Email, Ip = userEntity.Ip, Lives = userEntity.Lives });
 
                 return rowsAffected;
             }
@@ -104,7 +104,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("INSERT INTO products (name, description, type, price) VALUES (@Name, @Description, @Type, @Price)",
-                    new { Name = productEntity.name, Description = productEntity.description, Type = productEntity.type, Price = productEntity.price });
+                    new { Name = productEntity.Name, Description = productEntity.Description, Type = productEntity.Type, Price = productEntity.Price });
 
                 return rowsAffected;
             }
@@ -122,7 +122,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("UPDATE products SET name = @Name, description = @Description, type = @Type, price = @Price WHERE id = @Id",
-                   new { Id = productEntity.id, Name = productEntity.name, Description = productEntity.description, Type = productEntity.type, Price = productEntity.price });
+                   new { Id = productEntity.Id, Name = productEntity.Name, Description = productEntity.Description, Type = productEntity.Type, Price = productEntity.Price });
 
                 return rowsAffected;
             }
@@ -197,7 +197,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 Guid createdBundleId = await connection.QuerySingleAsync<Guid>
                     (@"INSERT INTO bundles (name, discount) VALUES (@Name, @Discount) RETURNING id",
-                    new { Name = bundleEntity.name, Discount = bundleEntity.discount });
+                    new { Name = bundleEntity.Name, Discount = bundleEntity.Discount });
 
                 return createdBundleId;
             }
@@ -215,7 +215,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("UPDATE bundles SET name = @Name, discount = @Discount WHERE id = @Id",
-                   new { Id = bundleEntity.id, Name = bundleEntity.name, Discount = bundleEntity.discount});
+                   new { Id = bundleEntity.Id, Name = bundleEntity.Name, Discount = bundleEntity.Discount});
 
                 return rowsAffected;
             }
@@ -315,7 +315,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
                     (@"INSERT INTO bundle_products (bundle_id, product_id) VALUES (@BundleId, @ProductId)",
-                    new { BundleId = bundleProductEntity.bundle_id, ProductId = bundleProductEntity.product_id });
+                    new { BundleId = bundleProductEntity.BundleId, ProductId = bundleProductEntity.ProductId });
 
                 return rowsAffected;
             }
@@ -325,14 +325,14 @@ namespace DataAccess
                 return 0;
             }
         }
-        public async Task<int> DeleteProductFromBundle(BundleProductEntity bundleProductEntity)
+        public async Task<int> DeleteProductFromBundle(Guid id)
         {
             try
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    (@"DELETE FROM bundle_products WHERE bundle_id = @BundleId and product_id = @ProductId",
-                    new { BundleId = bundleProductEntity.bundle_id, ProductId = bundleProductEntity.product_id });
+                    (@"DELETE FROM bundle_products WHERE id = @Id",
+                    new { Id = id });
 
                 return rowsAffected;
             }
@@ -354,7 +354,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("INSERT INTO departments (id, name, description) VALUES (@Id, @Name, @Description)",
-                    new { Id = departmentEntity.id, Name = departmentEntity.name, Description = departmentEntity.description });
+                    new { Id = departmentEntity.Id, Name = departmentEntity.Name, Description = departmentEntity.Description });
 
                 return rowsAffected;
             }
@@ -372,7 +372,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("UPDATE departments SET name = @Name, description = @Description WHERE id = @Id",
-                    new { Id = departmentEntity.id, Name = departmentEntity.name, Description = departmentEntity.description });
+                    new { Id = departmentEntity.Id, Name = departmentEntity.Name, Description = departmentEntity.Description });
 
                 return rowsAffected;
             }
@@ -446,7 +446,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("INSERT INTO product_types (id, name, department) VALUES (@Id, @Name, @Department)",
-                    new { Id = productTypeEntity.id, Name = productTypeEntity.name, Department = productTypeEntity.department });
+                    new { Id = productTypeEntity.Id, Name = productTypeEntity.Name, Department = productTypeEntity.Department });
 
                 return rowsAffected;
             }
@@ -464,7 +464,7 @@ namespace DataAccess
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
                     ("UPDATE product_types SET name = @Name, department = @Department WHERE id = @Id",
-                   new { Id = productTypeEntity.id, Name = productTypeEntity.name, Department = productTypeEntity.department });
+                   new { Id = productTypeEntity.Id, Name = productTypeEntity.Name, Department = productTypeEntity.Department });
 
                 return rowsAffected;
             }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataTransferObjects
 {
-    public class BundleProductDTO
+    public class CreateBundleProductDTO
     {
-        public Guid bundle_id { get; set; }
-        public Guid product_id { get; set; }
+        public Guid BundleId { get; set; }
+        public Guid ProductId { get; set; }
     }
 }
