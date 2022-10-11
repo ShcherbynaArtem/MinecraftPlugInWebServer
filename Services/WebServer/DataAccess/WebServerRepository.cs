@@ -2,10 +2,8 @@
 using Entities;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using System.ComponentModel.DataAnnotations.Schema;
 using Z.Dapper.Plus;
-using System.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DataAccess
 {
@@ -16,6 +14,11 @@ namespace DataAccess
         public WebServerRepository(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+            //To map column names with property names
+            SqlMapper.SetTypeMap(typeof(BundleProductEntity), new CustomPropertyTypeMap(
+                typeof(BundleProductEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
+                prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
         }
 
         #region user actions
@@ -34,7 +37,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -53,7 +56,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -70,7 +73,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -111,7 +114,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -129,7 +132,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -146,7 +149,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -222,7 +225,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -239,7 +242,7 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
@@ -249,7 +252,7 @@ namespace DataAccess
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var bundle = await connection.QuerySingleAsync<BundleEntity>
-                    (@"SELECT b.id, b.name, b.discount, array_remove(array_agg(bp.product_id), NULL) as product_ids
+                    (@"SELECT b.id, b.name, b.discount, array_remove(array_agg(bp.product_id), NULL) as ProductIds
                        FROM bundles as b
                        LEFT JOIN bundle_products as bp ON b.id = bp.bundle_id
                        WHERE b.id = @Id
@@ -272,7 +275,7 @@ namespace DataAccess
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var bundles = await connection.QueryAsync<BundleEntity>
-                    (@"SELECT b.id, b.name, b.discount, array_remove(array_agg(bp.product_id), NULL) as product_ids
+                    (@"SELECT b.id, b.name, b.discount, array_remove(array_agg(bp.product_id), NULL) as ProductIds
                        FROM bundles as b
                        LEFT JOIN bundle_products as bp ON b.id = bp.bundle_id
                        GROUP BY b.id");
@@ -304,42 +307,25 @@ namespace DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 
-        public async Task<int> AddProductToBundle(BundleProductEntity bundleProductEntity)
+        public async Task<int> DeleteProductsFromBundle(Guid bundleId)
         {
             try
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    (@"INSERT INTO bundle_products (bundle_id, product_id) VALUES (@BundleId, @ProductId)",
-                    new { BundleId = bundleProductEntity.BundleId, ProductId = bundleProductEntity.ProductId });
+                    (@"DELETE FROM bundle_products WHERE bundle_id = @Id",
+                    new { Id = bundleId });
 
                 return rowsAffected;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return 0;
-            }
-        }
-        public async Task<int> DeleteProductFromBundle(Guid id)
-        {
-            try
-            {
-                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
-                var rowsAffected = await connection.ExecuteAsync
-                    (@"DELETE FROM bundle_products WHERE id = @Id",
-                    new { Id = id });
-
-                return rowsAffected;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return 0;
+                return -1;
             }
         }
 

@@ -33,13 +33,6 @@ namespace Domain
 
         #endregion bundle actions
 
-        #region bundle product actions
-
-        Task<bool> AddProductToBundle(CreateBundleProductDTO bundleProductDTO);
-        Task<bool> DeleteProductFromBundle(Guid id);
-
-        #endregion bundle product actions
-
         #region department actions
 
         Task<bool> CreateDepartment(CreateDepartmentDTO departmentDTO);

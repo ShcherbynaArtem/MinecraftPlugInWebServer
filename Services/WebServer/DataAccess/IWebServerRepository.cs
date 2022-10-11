@@ -41,8 +41,7 @@ namespace DataAccess
         #region bundle product actions
 
         Task<int> AddProductsToBundle(List<BundleProductEntity> bundleProductEntities);
-        Task<int> AddProductToBundle(BundleProductEntity bundleProductEntity);
-        Task<int> DeleteProductFromBundle(Guid id);
+        Task<int> DeleteProductsFromBundle(Guid id);
 
         #endregion bundle product actions
 

@@ -118,7 +118,7 @@ namespace Domain
             if (createdBundleId == Guid.Empty)
                 return false;
 
-            if(!await AddProductsToBundle(bundleEntity.Id, bundleEntity.ProductIds))
+            if(!await AddProductsToBundle(createdBundleId, bundleEntity.ProductIds))
             {
                 Console.WriteLine("Products addition failed!");
             }
@@ -132,6 +132,10 @@ namespace Domain
             int rowsAffected = await _appServerRepo.UpdateBundle(bundleEntity);
             if (rowsAffected != 1)
                 return false;
+
+            if (!await ReplaceBundleProducts(bundleEntity.Id, bundleEntity.ProductIds))
+                return false;
+
             return true;
         }
 
@@ -170,32 +174,35 @@ namespace Domain
 
         #region bundle product actions
 
-        public async Task<bool> AddProductToBundle(CreateBundleProductDTO bundleProductDTO)
+        private async Task<bool> ReplaceBundleProducts(Guid bundleId, IEnumerable<Guid> productIds)
         {
-            BundleProductEntity bundleProductEntity = _mapper.Map<BundleProductEntity>(bundleProductDTO);
-            int rowsAffected = await _appServerRepo.AddProductToBundle(bundleProductEntity);
-            if (rowsAffected == 1)
-                return true;
-            return false;
-        }
-        public async Task<bool> DeleteProductFromBundle(Guid id)
-        {
-            int rowsAffected = await _appServerRepo.DeleteProductFromBundle(id);
-            if (rowsAffected == 1)
-                return true;
-            return false;
+            if (!await DeleteProductsFromBundle(bundleId))
+                return false;
+
+            if (!await AddProductsToBundle(bundleId, productIds))
+                return false;
+
+            return true;
         }
 
-        private async Task<bool> AddProductsToBundle(Guid bundle_id, IEnumerable<Guid> productIds)
+        private async Task<bool> AddProductsToBundle(Guid bundleId, IEnumerable<Guid> productIds)
         {
             List<BundleProductEntity> bundleProductEntities = new List<BundleProductEntity>();
             foreach(Guid productId in productIds)
             {
-                bundleProductEntities.Add(new BundleProductEntity(bundle_id, productId));
+                bundleProductEntities.Add(new BundleProductEntity(bundleId, productId));
             }
 
             var rowsAffected = await _appServerRepo.AddProductsToBundle(bundleProductEntities);
             if (rowsAffected != 0)
+                return true;
+            return false;
+        }
+
+        private async Task<bool> DeleteProductsFromBundle(Guid bundleId)
+        {
+            int rowsAffected = await _appServerRepo.DeleteProductsFromBundle(bundleId);
+            if (rowsAffected >= 0)
                 return true;
             return false;
         }

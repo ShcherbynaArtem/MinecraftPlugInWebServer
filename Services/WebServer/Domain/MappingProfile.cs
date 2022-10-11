@@ -27,8 +27,6 @@ namespace Domain
             CreateMap<CreateBundleDTO, BundleEntity>().ReverseMap();
             CreateMap<UpdateBundleDTO, BundleEntity>().ReverseMap();
             CreateMap<GetBundleDTO,    BundleEntity>().ReverseMap();
-
-            CreateMap<CreateBundleProductDTO, BundleProductEntity>().ReverseMap();
         }
     }
 }
