@@ -3,61 +3,61 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS users (
 	id uuid PRIMARY KEY NOT NULL,
 	username VARCHAR (20) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    ip VARCHAR (30) NOT NUll,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	ip VARCHAR (30) NOT NUll,
 	lives int NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS departments
 (
-    id int PRIMARY KEY,
-    name text NOT NULL,
-    description text
+	id int PRIMARY KEY,
+	name text NOT NULL,
+	description text
 );
 
 CREATE TABLE IF NOT EXISTS product_types
 (
-    id int PRIMARY KEY,
-    name text NOT NULL,
-    department int references departments(id)
+	id int PRIMARY KEY,
+	name text NOT NULL,
+	department int references departments(id)
 );
 
 CREATE TABLE IF NOT EXISTS products
 (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
-    name text NOT NULL,
-    description text NOT NULL,
-    type int references product_types(id),
-    price numeric NOT NULL DEFAULT 0,
+	id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
+	name text NOT NULL,
+	description text NOT NULL,
+	type int references product_types(id),
+	price numeric NOT NULL DEFAULT 0,
 	availability bool NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS user_items
 (
 	id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
-    user_id uuid references users(id) ON DELETE CASCADE,
-    item_id uuid references products(id) NOT NULL
+	user_id uuid references users(id) ON DELETE CASCADE,
+	item_id uuid references products(id) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_perks
 (
 	id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
-    user_id uuid references users(id) ON DELETE CASCADE,
-    perk_id uuid references products(id) NOT NULL
+	user_id uuid references users(id) ON DELETE CASCADE,
+	perk_id uuid references products(id) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS bundles
 (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
-    name text NOT NULL,
-    discount numeric NOT NULL DEFAULT 0 
+	id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
+	name text NOT NULL,
+	discount numeric NOT NULL DEFAULT 0 
 );
 
 CREATE TABLE IF NOT EXISTS bundle_products
 (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
-    bundle_id uuid references bundles(id) ON DELETE CASCADE,
-    product_id uuid references products(id) ON DELETE CASCADE
+	id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
+	bundle_id uuid references bundles(id) ON DELETE CASCADE,
+	product_id uuid references products(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS transactions

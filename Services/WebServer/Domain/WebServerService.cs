@@ -107,6 +107,17 @@ namespace Domain
             return productDTOs;
         }
 
+        public async Task<List<GetAvailableProductDTO>> GetAvailableProducts()
+        {
+            List<ProductEntity> productEntities = await _webServerRepo.GetAvailableProducts();
+            List<GetAvailableProductDTO> productDTOs = new List<GetAvailableProductDTO>();
+            foreach (ProductEntity productEntity in productEntities)
+            {
+                productDTOs.Add(_mapper.Map<GetAvailableProductDTO>(productEntity));
+            }
+            return productDTOs;
+        }
+
         #endregion product actions
 
         #region bundle actions

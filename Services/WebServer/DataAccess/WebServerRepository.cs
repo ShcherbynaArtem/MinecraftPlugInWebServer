@@ -124,8 +124,11 @@ namespace DataAccess
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
-                    ("UPDATE products SET name = @Name, description = @Description, type = @Type, price = @Price WHERE id = @Id",
-                   new { Id = productEntity.Id, Name = productEntity.Name, Description = productEntity.Description, Type = productEntity.Type, Price = productEntity.Price });
+                    (@"UPDATE products SET name = @Name, description = @Description,
+                                           type = @Type, price = @Price, availability = @Availability
+                                           WHERE id = @Id",
+                   new { Id = productEntity.Id, Name = productEntity.Name, Description = productEntity.Description,
+                         Type = productEntity.Type, Price = productEntity.Price, Availability = productEntity.Availability });
 
                 return rowsAffected;
             }
@@ -159,7 +162,7 @@ namespace DataAccess
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var product = await connection.QuerySingleAsync<ProductEntity>
-                    (@"SELECT id, name, description, type, price FROM 
+                    (@"SELECT id, name, description, type, price, availability FROM 
                    products WHERE id = @Id",
                     new { Id = id });
 
@@ -178,7 +181,24 @@ namespace DataAccess
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var products = await connection.QueryAsync<ProductEntity>
-                    ("SELECT id, name, description, type, price FROM products");
+                    ("SELECT id, name, description, type, price, availability FROM products");
+
+                return (List<ProductEntity>)products;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<ProductEntity>();
+            }
+        }
+
+        public async Task<List<ProductEntity>> GetAvailableProducts()
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var products = await connection.QueryAsync<ProductEntity>
+                    ("SELECT id, name, description, type, price FROM products WHERE availability = true");
 
                 return (List<ProductEntity>)products;
             }

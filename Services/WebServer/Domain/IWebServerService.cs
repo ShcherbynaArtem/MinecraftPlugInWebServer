@@ -20,6 +20,7 @@ namespace Domain
         Task<bool> DeleteProduct(Guid id);
         Task<GetProductDTO> GetProduct(Guid id);
         Task<List<GetProductDTO>> GetProducts();
+        Task<List<GetAvailableProductDTO>> GetAvailableProducts();
 
         #endregion product actions
 

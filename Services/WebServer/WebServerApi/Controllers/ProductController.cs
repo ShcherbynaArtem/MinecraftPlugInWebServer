@@ -52,5 +52,13 @@ namespace WebServerApi.Controllers
             List<GetProductDTO> productDTOs = await _webServerService.GetProducts();
             return Ok(productDTOs);
         }
+
+        [HttpGet]
+        [Route("Available")]
+        public async Task<ActionResult<GetAvailableProductDTO>> GetAvailableProducts()
+        {
+            List<GetAvailableProductDTO> productDTOs = await _webServerService.GetAvailableProducts();
+            return Ok(productDTOs);
+        }
     }
 }

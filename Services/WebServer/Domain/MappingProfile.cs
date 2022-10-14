@@ -12,9 +12,10 @@ namespace Domain
             CreateMap<UpdateUserDTO, UserEntity>().ReverseMap();
             CreateMap<GetUserDTO,    UserEntity>().ReverseMap();
 
-            CreateMap<CreateProductDTO, ProductEntity>().ReverseMap();
-            CreateMap<UpdateProductDTO, ProductEntity>().ReverseMap();
-            CreateMap<GetProductDTO,    ProductEntity>().ReverseMap();
+            CreateMap<CreateProductDTO,       ProductEntity>().ReverseMap();
+            CreateMap<UpdateProductDTO,       ProductEntity>().ReverseMap();
+            CreateMap<GetProductDTO,          ProductEntity>().ReverseMap();
+            CreateMap<GetAvailableProductDTO, ProductEntity>().ReverseMap();
 
             CreateMap<CreateDepartmentDTO, DepartmentEntity>().ReverseMap();
             CreateMap<UpdateDepartmentDTO, DepartmentEntity>().ReverseMap();

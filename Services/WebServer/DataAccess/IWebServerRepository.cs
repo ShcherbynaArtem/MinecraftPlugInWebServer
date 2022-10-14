@@ -25,6 +25,7 @@ namespace DataAccess
         Task<int> DeleteProduct(Guid id);
         Task<ProductEntity> GetProductById(Guid id);
         Task<List<ProductEntity>> GetProducts();
+        Task<List<ProductEntity>> GetAvailableProducts();
 
         #endregion product actions
 
