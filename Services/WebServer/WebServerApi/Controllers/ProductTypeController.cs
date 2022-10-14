@@ -8,17 +8,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class ProductTypeController : ControllerBase
     {
-        private readonly IWebServerService _appServerService;
+        private readonly IWebServerService _webServerService;
 
-        public ProductTypeController(IWebServerService appServerService)
+        public ProductTypeController(IWebServerService webServerService)
         {
-            _appServerService = appServerService ?? throw new ArgumentNullException(nameof(appServerService));
+            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateProductType(CreateProductTypeDTO bundleDTO)
         {
-            if (await _appServerService.CreateProductType(bundleDTO))
+            if (await _webServerService.CreateProductType(bundleDTO))
                 return Ok();
             return BadRequest();
         }
@@ -26,7 +26,7 @@ namespace WebServerApi.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateProductType(UpdateProductTypeDTO bundleDTO)
         {
-            if (await _appServerService.UpdateProductType(bundleDTO))
+            if (await _webServerService.UpdateProductType(bundleDTO))
                 return Ok();
             return BadRequest();
         }
@@ -34,7 +34,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteProductType(int id)
         {
-            if (await _appServerService.DeleteProductType(id))
+            if (await _webServerService.DeleteProductType(id))
                 return Ok();
             return BadRequest();
         }
@@ -42,14 +42,14 @@ namespace WebServerApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetProductTypeDTO>> GetProductType(int id)
         {
-            GetProductTypeDTO bundleDTO = await _appServerService.GetProductType(id);
+            GetProductTypeDTO bundleDTO = await _webServerService.GetProductType(id);
             return Ok(bundleDTO);
         }
 
         [HttpGet]
         public async Task<ActionResult<GetProductTypeDTO>> GetProductTypes()
         {
-            List<GetProductTypeDTO> bundleDTOs = await _appServerService.GetProductTypes();
+            List<GetProductTypeDTO> bundleDTOs = await _webServerService.GetProductTypes();
             return Ok(bundleDTOs);
         }
     }

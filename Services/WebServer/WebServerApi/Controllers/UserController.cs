@@ -10,17 +10,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IWebServerService _appServerService;
+        private readonly IWebServerService _webServerService;
 
-        public UserController(IWebServerService appServerService)
+        public UserController(IWebServerService webServerService)
         {
-            _appServerService = appServerService ?? throw new ArgumentNullException(nameof(appServerService));
+            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateUser(CreateUserDTO userDTO)
         {
-            if (await _appServerService.CreateUser(userDTO))
+            if (await _webServerService.CreateUser(userDTO))
                 return Ok();
             return BadRequest();
         }
@@ -28,7 +28,7 @@ namespace WebServerApi.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateUser(UpdateUserDTO userDTO)
         {
-            if (await _appServerService.UpdateUser(userDTO))
+            if (await _webServerService.UpdateUser(userDTO))
                 return Ok();
             return BadRequest();
         }
@@ -36,7 +36,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUser(Guid id)
         {
-            if (await _appServerService.DeleteUser(id))
+            if (await _webServerService.DeleteUser(id))
                 return Ok();
             return BadRequest();
         }
@@ -44,7 +44,7 @@ namespace WebServerApi.Controllers
         [HttpGet]
         public async Task<ActionResult<GetUserDTO>> GetUser(Guid id)
         {
-            GetUserDTO userDTO = await _appServerService.GetUser(id);
+            GetUserDTO userDTO = await _webServerService.GetUser(id);
             return Ok(userDTO);
         }
     }

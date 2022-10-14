@@ -15,7 +15,7 @@ services:
     ports:
       - "5433:5432"
       
-  application.server.db:
+  web.server.db:
     container_name: web.server.db
     image: postgres
     restart: always

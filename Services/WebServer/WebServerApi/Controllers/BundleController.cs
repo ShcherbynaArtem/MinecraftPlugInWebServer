@@ -8,17 +8,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class BundleController : ControllerBase
     {
-        private readonly IWebServerService _appServerService;
+        private readonly IWebServerService _webServerService;
 
-        public BundleController(IWebServerService appServerService)
+        public BundleController(IWebServerService webServerService)
         {
-            _appServerService = appServerService ?? throw new ArgumentNullException(nameof(appServerService));
+            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateBundle(CreateBundleDTO bundleDTO)
         {
-            if (await _appServerService.CreateBundle(bundleDTO))
+            if (await _webServerService.CreateBundle(bundleDTO))
                 return Ok();
             return BadRequest();
         }
@@ -26,7 +26,7 @@ namespace WebServerApi.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateBundle(UpdateBundleDTO bundleDTO)
         {
-            if(await _appServerService.UpdateBundle(bundleDTO))
+            if(await _webServerService.UpdateBundle(bundleDTO))
                 return Ok();
             return BadRequest();
         }
@@ -34,7 +34,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteBundle(Guid id)
         {
-            if (await _appServerService.DeleteBundle(id))
+            if (await _webServerService.DeleteBundle(id))
                 return Ok();
             return BadRequest();
         }
@@ -42,14 +42,14 @@ namespace WebServerApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetBundleDTO>> GetBundle(Guid id)
         {
-            GetBundleDTO bundleDTO = await _appServerService.GetBundle(id);
+            GetBundleDTO bundleDTO = await _webServerService.GetBundle(id);
             return Ok(bundleDTO);
         }
 
         [HttpGet]
         public async Task<ActionResult<GetBundleDTO>> GetBundles()
         {
-            List<GetBundleDTO> bundleDTOs = await _appServerService.GetBundles();
+            List<GetBundleDTO> bundleDTOs = await _webServerService.GetBundles();
             return Ok(bundleDTOs);
         }
     }
