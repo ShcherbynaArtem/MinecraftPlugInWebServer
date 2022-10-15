@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS user_items
 (
 	id uuid PRIMARY KEY DEFAULT uuid_generate_v1 (),
 	user_id uuid references users(id) ON DELETE CASCADE,
-	item_id uuid references products(id) NOT NULL
+	item_id uuid references products(id) NOT NULL,
+	received bool NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS user_perks

@@ -53,5 +53,15 @@ namespace Domain
         Task<List<GetProductTypeDTO>> GetProductTypes();
 
         #endregion product type actions
+
+        #region user item actions
+
+        Task<bool> CreateUserItem(CreateUserItemDTO userItemDTO);
+        Task<bool> MarkUserItemAsReceived(Guid userItemId);
+        Task<bool> DeleteUserItem(Guid id);
+        Task<List<GetUserItemDTO>> GetUserItems(Guid userId);
+        Task<List<GetNotReceivedItemDTO>> GetNotReceivedUserItems(Guid userId);
+
+        #endregion user item actions
     }
 }

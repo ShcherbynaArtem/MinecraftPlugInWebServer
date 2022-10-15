@@ -19,6 +19,10 @@ namespace DataAccess
             SqlMapper.SetTypeMap(typeof(BundleProductEntity), new CustomPropertyTypeMap(
                 typeof(BundleProductEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
                 prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
+
+            SqlMapper.SetTypeMap(typeof(UserItemEntity), new CustomPropertyTypeMap(
+                typeof(UserItemEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
+                prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
         }
 
         #region user actions
@@ -504,8 +508,7 @@ namespace DataAccess
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var productType = await connection.QuerySingleAsync<ProductTypeEntity>
-                    (@"SELECT id, name, department FROM 
-                   product_types WHERE id = @Id",
+                    (@"SELECT id, name, department FROM product_types WHERE id = @Id",
                     new { Id = id });
 
                 return (ProductTypeEntity)productType;
@@ -522,10 +525,10 @@ namespace DataAccess
             try
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
-                var products = await connection.QueryAsync<ProductTypeEntity>
+                var productTypes = await connection.QueryAsync<ProductTypeEntity>
                     ("SELECT id, name, department FROM product_types");
 
-                return (List<ProductTypeEntity>)products;
+                return (List<ProductTypeEntity>)productTypes;
             }
             catch (Exception ex)
             {
@@ -535,5 +538,95 @@ namespace DataAccess
         }
 
         #endregion product type actions
+
+        #region user item actions
+
+        public async Task<int> CreateUserItem(UserItemEntity userItemEntity)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                int rowsAffected = await connection.ExecuteAsync
+                    ("INSERT INTO user_items (user_id, item_id) VALUES (@UserId, @ProductId)",
+                    new { UserId = userItemEntity.UserId, ItemId = userItemEntity.ItemId });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+        public async Task<int> MarkUserItemAsReceived(Guid userItemId)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                int rowsAffected = await connection.ExecuteAsync
+                    ("UPDATE user_items SET received = true WHERE id = @UserItemId",
+                   new { UserItemId = userItemId });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+        public async Task<int> DeleteUserItem(Guid id)
+        {
+            try
+            {
+                var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var rowsAffected = await connection.ExecuteAsync
+                    ("DELETE FROM user_items WHERE id = @Id", new { Id = id });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+        public async Task<List<UserItemEntity>> GetUserItems(Guid userId)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var userItems = await connection.QueryAsync<UserItemEntity>
+                    ("SELECT id, user_id, item_id, received FROM user_items WHERE user_id = @UserId",
+                    new { UserId = userId });
+
+                return (List<UserItemEntity>)userItems;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<UserItemEntity>();
+            }
+        }
+        public async Task<List<UserItemEntity>> GetNotReceivedUserItems(Guid userId)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var userItems = await connection.QueryAsync<UserItemEntity>
+                    (@"SELECT id, user_id, item_id, received FROM user_items
+                       WHERE user_id = @UserId AND received = false",
+                    new { UserId = userId });
+
+                return (List<UserItemEntity>)userItems;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<UserItemEntity>();
+            }
+        }
+
+        #endregion user item actions
     }
 }

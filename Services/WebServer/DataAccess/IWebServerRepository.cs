@@ -65,5 +65,15 @@ namespace DataAccess
         Task<List<ProductTypeEntity>> GetProductTypes();
 
         #endregion product type actions
+
+        #region user item actions
+
+        Task<int> CreateUserItem(UserItemEntity userItemEntity);
+        Task<int> MarkUserItemAsReceived(Guid userItemId);
+        Task<int> DeleteUserItem(Guid id);
+        Task<List<UserItemEntity>> GetUserItems(Guid userId);
+        Task<List<UserItemEntity>> GetNotReceivedUserItems(Guid userId);
+
+        #endregion user item actions
     }
 }

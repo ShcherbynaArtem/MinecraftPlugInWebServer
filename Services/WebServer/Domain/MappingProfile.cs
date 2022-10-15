@@ -28,6 +28,10 @@ namespace Domain
             CreateMap<CreateBundleDTO, BundleEntity>().ReverseMap();
             CreateMap<UpdateBundleDTO, BundleEntity>().ReverseMap();
             CreateMap<GetBundleDTO,    BundleEntity>().ReverseMap();
+
+            CreateMap<CreateUserItemDTO,     UserItemEntity>().ReverseMap();
+            CreateMap<GetUserItemDTO,        UserItemEntity>().ReverseMap();
+            CreateMap<GetNotReceivedItemDTO, UserItemEntity>().ReverseMap();
         }
     }
 }
