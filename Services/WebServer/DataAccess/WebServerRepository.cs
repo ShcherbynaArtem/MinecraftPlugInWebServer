@@ -324,7 +324,7 @@ namespace DataAccess
                 DapperPlusManager.Entity<BundleProductEntity>().Table("bundle_products");
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
 
-                connection.BulkInsert<BundleProductEntity>(bundleProducts);
+                await connection.BulkActionAsync(x => x.BulkInsert<BundleProductEntity>(bundleProducts));
 
                 return 1;
             }
