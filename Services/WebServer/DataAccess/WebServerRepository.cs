@@ -547,7 +547,7 @@ namespace DataAccess
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 int rowsAffected = await connection.ExecuteAsync
-                    ("INSERT INTO user_items (user_id, item_id) VALUES (@UserId, @ProductId)",
+                    ("INSERT INTO user_items (user_id, item_id) VALUES (@UserId, @ItemId)",
                     new { UserId = userItemEntity.UserId, ItemId = userItemEntity.ItemId });
 
                 return rowsAffected;
