@@ -32,17 +32,17 @@ namespace WebServerApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteBundle(Guid id)
+        public async Task<ActionResult> DeleteBundle(Guid bundleId)
         {
-            if (await _webServerService.DeleteBundle(id))
+            if (await _webServerService.DeleteBundle(bundleId))
                 return Ok();
             return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetBundleDTO>> GetBundle(Guid id)
+        public async Task<ActionResult<GetBundleDTO>> GetBundle(Guid bundleId)
         {
-            GetBundleDTO bundleDTO = await _webServerService.GetBundle(id);
+            GetBundleDTO bundleDTO = await _webServerService.GetBundle(bundleId);
             return Ok(bundleDTO);
         }
 

@@ -27,9 +27,9 @@ namespace Domain
             return false;
         }
 
-        public async Task<GetUserDTO> GetUser(Guid id)
+        public async Task<GetUserDTO> GetUser(Guid userId)
         {
-            UserEntity userEntity = await _webServerRepo.GetUserById(id);
+            UserEntity userEntity = await _webServerRepo.GetUserById(userId);
             if(!string.IsNullOrEmpty(userEntity.Username))
             {
                 GetUserDTO userDTO = _mapper.Map<GetUserDTO>(userEntity);
@@ -47,9 +47,9 @@ namespace Domain
             return false;
         }
 
-        public async Task<bool> DeleteUser(Guid id)
+        public async Task<bool> DeleteUser(Guid userId)
         {
-            int rowsAffected = await _webServerRepo.DeleteUser(id);
+            int rowsAffected = await _webServerRepo.DeleteUser(userId);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -77,17 +77,17 @@ namespace Domain
             return false;
         }
 
-        public async Task<bool> DeleteProduct(Guid id)
+        public async Task<bool> DeleteProduct(Guid productId)
         {
-            int rowsAffected = await _webServerRepo.DeleteProduct(id);
+            int rowsAffected = await _webServerRepo.DeleteProduct(productId);
             if (rowsAffected == 1)
                 return true;
             return false;
         }
 
-        public async Task<GetProductDTO> GetProduct(Guid id)
+        public async Task<GetProductDTO> GetProduct(Guid productId)
         {
-            ProductEntity productEntity = await _webServerRepo.GetProductById(id);
+            ProductEntity productEntity = await _webServerRepo.GetProductById(productId);
             if (!string.IsNullOrEmpty(productEntity.Name))
             {
                 GetProductDTO productDTO = _mapper.Map<GetProductDTO>(productEntity);
@@ -150,17 +150,17 @@ namespace Domain
             return true;
         }
 
-        public async Task<bool> DeleteBundle(Guid id)
+        public async Task<bool> DeleteBundle(Guid bundleId)
         {
-            int rowsAffected = await _webServerRepo.DeleteBundle(id);
+            int rowsAffected = await _webServerRepo.DeleteBundle(bundleId);
             if (rowsAffected == 0)
                 return false;
             return true;
         }
 
-        public async Task<GetBundleDTO> GetBundle(Guid id)
+        public async Task<GetBundleDTO> GetBundle(Guid bundleId)
         {
-            BundleEntity bundleEntity = await _webServerRepo.GetBundleById(id);
+            BundleEntity bundleEntity = await _webServerRepo.GetBundleById(bundleId);
             if (!string.IsNullOrEmpty(bundleEntity.Name))
             {
                 GetBundleDTO bundleDTO = _mapper.Map<GetBundleDTO>(bundleEntity);
@@ -231,9 +231,9 @@ namespace Domain
             return false;
         }
 
-        public async Task<GetDepartmentDTO> GetDepartment(int id)
+        public async Task<GetDepartmentDTO> GetDepartment(int departmentId)
         {
-            DepartmentEntity departmentEntity = await _webServerRepo.GetDepartmentById(id);
+            DepartmentEntity departmentEntity = await _webServerRepo.GetDepartmentById(departmentId);
             if (!string.IsNullOrEmpty(departmentEntity.Name))
             {
                 GetDepartmentDTO departmentDTO = _mapper.Map<GetDepartmentDTO>(departmentEntity);
@@ -251,9 +251,9 @@ namespace Domain
             return false;
         }
 
-        public async Task<bool> DeleteDepartment(int id)
+        public async Task<bool> DeleteDepartment(int departmentId)
         {
-            int rowsAffected = await _webServerRepo.DeleteDepartment(id);
+            int rowsAffected = await _webServerRepo.DeleteDepartment(departmentId);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -292,17 +292,17 @@ namespace Domain
             return false;
         }
 
-        public async Task<bool> DeleteProductType(int id)
+        public async Task<bool> DeleteProductType(int productTypeId)
         {
-            int rowsAffected = await _webServerRepo.DeleteProductType(id);
+            int rowsAffected = await _webServerRepo.DeleteProductType(productTypeId);
             if (rowsAffected == 1)
                 return true;
             return false;
         }
 
-        public async Task<GetProductTypeDTO> GetProductType(int id)
+        public async Task<GetProductTypeDTO> GetProductType(int productTypeId)
         {
-            ProductTypeEntity productTypeEntity = await _webServerRepo.GetProductTypeById(id);
+            ProductTypeEntity productTypeEntity = await _webServerRepo.GetProductTypeById(productTypeId);
             if (!string.IsNullOrEmpty(productTypeEntity.Name))
             {
                 GetProductTypeDTO productTypeDTO = _mapper.Map<GetProductTypeDTO>(productTypeEntity);
@@ -341,9 +341,9 @@ namespace Domain
                 return true;
             return false;
         }
-        public async Task<bool> DeleteUserItem(Guid id)
+        public async Task<bool> DeleteUserItem(Guid userItemId)
         {
-            int rowsAffected = await _webServerRepo.DeleteUserItem(id);
+            int rowsAffected = await _webServerRepo.DeleteUserItem(userItemId);
             if (rowsAffected == 1)
                 return true;
             return false;

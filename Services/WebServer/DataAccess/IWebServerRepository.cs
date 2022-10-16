@@ -13,8 +13,8 @@ namespace DataAccess
 
         Task<int> CreateUser(UserEntity userEntity);
         Task<int> UpdateUser(UserEntity userEntity);
-        Task<int> DeleteUser(Guid id);
-        Task<UserEntity> GetUserById(Guid id);
+        Task<int> DeleteUser(Guid userId);
+        Task<UserEntity> GetUserById(Guid userId);
 
         #endregion user actions
 
@@ -22,8 +22,8 @@ namespace DataAccess
 
         Task<int> CreateProduct(ProductEntity productEntity);
         Task<int> UpdateProduct(ProductEntity productEntity);
-        Task<int> DeleteProduct(Guid id);
-        Task<ProductEntity> GetProductById(Guid id);
+        Task<int> DeleteProduct(Guid productId);
+        Task<ProductEntity> GetProductById(Guid productId);
         Task<List<ProductEntity>> GetProducts();
         Task<List<ProductEntity>> GetAvailableProducts();
 
@@ -33,8 +33,8 @@ namespace DataAccess
 
         Task<Guid> CreateBundle(BundleEntity bundleEntity);
         Task<int> UpdateBundle(BundleEntity bundleEntity);
-        Task<int> DeleteBundle(Guid id);
-        Task<BundleEntity> GetBundleById(Guid id);
+        Task<int> DeleteBundle(Guid bundleId);
+        Task<BundleEntity> GetBundleById(Guid bundleId);
         Task<List<BundleEntity>> GetBundles();
 
         #endregion bundle actions
@@ -50,8 +50,8 @@ namespace DataAccess
 
         Task<int> CreateDepartment(DepartmentEntity userEntity);
         Task<int> UpdateDepartment(DepartmentEntity userEntity);
-        Task<int> DeleteDepartment(int id);
-        Task<DepartmentEntity> GetDepartmentById(int id);
+        Task<int> DeleteDepartment(int departmentId);
+        Task<DepartmentEntity> GetDepartmentById(int departmentId);
         Task<List<DepartmentEntity>> GetDepartments();
 
         #endregion department actions
@@ -60,8 +60,8 @@ namespace DataAccess
 
         Task<int> CreateProductType(ProductTypeEntity productTypeEntity);
         Task<int> UpdateProductType(ProductTypeEntity productTypeEntity);
-        Task<int> DeleteProductType(int id);
-        Task<ProductTypeEntity> GetProductTypeById(int id);
+        Task<int> DeleteProductType(int idproductTypeId);
+        Task<ProductTypeEntity> GetProductTypeById(int productTypeId);
         Task<List<ProductTypeEntity>> GetProductTypes();
 
         #endregion product type actions
@@ -70,7 +70,7 @@ namespace DataAccess
 
         Task<int> CreateUserItem(UserItemEntity userItemEntity);
         Task<int> MarkUserItemAsReceived(Guid userItemId);
-        Task<int> DeleteUserItem(Guid id);
+        Task<int> DeleteUserItem(Guid userItemId);
         Task<List<UserItemEntity>> GetUserItems(Guid userId);
         Task<List<UserItemEntity>> GetNotReceivedUserItems(Guid userId);
 

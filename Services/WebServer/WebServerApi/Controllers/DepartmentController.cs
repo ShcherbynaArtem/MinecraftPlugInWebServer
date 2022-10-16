@@ -32,17 +32,17 @@ namespace WebServerApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteDepartment(int id)
+        public async Task<ActionResult> DeleteDepartment(int departmentId)
         {
-            if(await _webServerService.DeleteDepartment(id))
+            if(await _webServerService.DeleteDepartment(departmentId))
                 return Ok();
             return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetDepartmentDTO>> GetDepartment(int id)
+        public async Task<ActionResult<GetDepartmentDTO>> GetDepartment(int departmentId)
         {
-            GetDepartmentDTO departmentDTO = await _webServerService.GetDepartment(id);
+            GetDepartmentDTO departmentDTO = await _webServerService.GetDepartment(departmentId);
             return Ok(departmentDTO);
         }
 

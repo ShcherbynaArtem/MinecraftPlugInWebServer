@@ -32,9 +32,9 @@ namespace WebServerApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteUserItem(Guid id)
+        public async Task<ActionResult> DeleteUserItem(Guid userItemId)
         {
-            if (await _webServerService.DeleteUserItem(id))
+            if (await _webServerService.DeleteUserItem(userItemId))
                 return Ok();
             return BadRequest();
         }
@@ -42,16 +42,16 @@ namespace WebServerApi.Controllers
         [HttpGet]
         public async Task<ActionResult<GetUserItemDTO>> GetUserItems(Guid userId)
         {
-            List<GetUserItemDTO> userDTO = await _webServerService.GetUserItems(userId);
-            return Ok(userDTO);
+            List<GetUserItemDTO> userItemDTOs = await _webServerService.GetUserItems(userId);
+            return Ok(userItemDTOs);
         }
 
         [HttpGet]
         [Route("Available")]
         public async Task<ActionResult<GetNotReceivedItemDTO>> GetNotReceivedUserItems(Guid userId)
         {
-            List<GetNotReceivedItemDTO> userDTO = await _webServerService.GetNotReceivedUserItems(userId);
-            return Ok(userDTO);
+            List<GetNotReceivedItemDTO> userItemDTOs = await _webServerService.GetNotReceivedUserItems(userId);
+            return Ok(userItemDTOs);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Domain
 
         Task<bool> CreateUser(CreateUserDTO userDTO);
         Task<bool> UpdateUser(UpdateUserDTO userDTO);
-        Task<bool> DeleteUser(Guid id);
-        Task<GetUserDTO> GetUser(Guid id);
+        Task<bool> DeleteUser(Guid userId);
+        Task<GetUserDTO> GetUser(Guid userId);
 
         #endregion user actions
 
@@ -17,8 +17,8 @@ namespace Domain
 
         Task<bool> CreateProduct(CreateProductDTO userDTO);
         Task<bool> UpdateProduct(UpdateProductDTO userDTO);
-        Task<bool> DeleteProduct(Guid id);
-        Task<GetProductDTO> GetProduct(Guid id);
+        Task<bool> DeleteProduct(Guid productId);
+        Task<GetProductDTO> GetProduct(Guid productId);
         Task<List<GetProductDTO>> GetProducts();
         Task<List<GetAvailableProductDTO>> GetAvailableProducts();
 
@@ -28,8 +28,8 @@ namespace Domain
 
         Task<bool> CreateBundle(CreateBundleDTO bundleDTO);
         Task<bool> UpdateBundle(UpdateBundleDTO bundleDTO);
-        Task<bool> DeleteBundle(Guid id);
-        Task<GetBundleDTO> GetBundle(Guid id);
+        Task<bool> DeleteBundle(Guid bundleId);
+        Task<GetBundleDTO> GetBundle(Guid bundleId);
         Task<List<GetBundleDTO>> GetBundles();
 
         #endregion bundle actions
@@ -38,8 +38,8 @@ namespace Domain
 
         Task<bool> CreateDepartment(CreateDepartmentDTO departmentDTO);
         Task<bool> UpdateDepartment(UpdateDepartmentDTO departmentDTO);
-        Task<bool> DeleteDepartment(int id);
-        Task<GetDepartmentDTO> GetDepartment(int id);
+        Task<bool> DeleteDepartment(int departmentId);
+        Task<GetDepartmentDTO> GetDepartment(int departmentId);
         Task<List<GetDepartmentDTO>> GetDepartments();
 
         #endregion department actions
@@ -48,8 +48,8 @@ namespace Domain
 
         Task<bool> CreateProductType(CreateProductTypeDTO userDTO);
         Task<bool> UpdateProductType(UpdateProductTypeDTO userDTO);
-        Task<bool> DeleteProductType(int id);
-        Task<GetProductTypeDTO> GetProductType(int id);
+        Task<bool> DeleteProductType(int productTypeId);
+        Task<GetProductTypeDTO> GetProductType(int productTypeId);
         Task<List<GetProductTypeDTO>> GetProductTypes();
 
         #endregion product type actions
@@ -58,7 +58,7 @@ namespace Domain
 
         Task<bool> CreateUserItem(CreateUserItemDTO userItemDTO);
         Task<bool> MarkUserItemAsReceived(Guid userItemId);
-        Task<bool> DeleteUserItem(Guid id);
+        Task<bool> DeleteUserItem(Guid userItemId);
         Task<List<GetUserItemDTO>> GetUserItems(Guid userId);
         Task<List<GetNotReceivedItemDTO>> GetNotReceivedUserItems(Guid userId);
 

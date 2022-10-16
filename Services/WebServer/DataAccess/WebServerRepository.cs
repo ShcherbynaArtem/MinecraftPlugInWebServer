@@ -15,7 +15,7 @@ namespace DataAccess
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            //To map column names with property names
+            //Map column names with property names
             SqlMapper.SetTypeMap(typeof(BundleProductEntity), new CustomPropertyTypeMap(
                 typeof(BundleProductEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
                 prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
@@ -64,13 +64,13 @@ namespace DataAccess
             }
         }
 
-        public async Task<int> DeleteUser(Guid id)
+        public async Task<int> DeleteUser(Guid userId)
         {
             try
             {
                 var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    ("DELETE FROM users WHERE id = @Id", new { Id = id });
+                    ("DELETE FROM users WHERE id = @Id", new { Id = userId });
 
                 return rowsAffected;
             }
@@ -81,7 +81,7 @@ namespace DataAccess
             }
         }
 
-        public async Task<UserEntity> GetUserById(Guid id)
+        public async Task<UserEntity> GetUserById(Guid userId)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace DataAccess
                 var user = await connection.QuerySingleAsync<UserEntity>
                     (@"SELECT id, username, email, ip, lives FROM 
                    users WHERE id = @Id",
-                    new { Id = id });
+                    new { Id = userId });
 
                 return (UserEntity)user;
             }
@@ -143,13 +143,13 @@ namespace DataAccess
             }
         }
 
-        public async Task<int> DeleteProduct(Guid id)
+        public async Task<int> DeleteProduct(Guid productId)
         {
             try
             {
                 var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    ("DELETE FROM products WHERE id = @Id", new { Id = id });
+                    ("DELETE FROM products WHERE id = @Id", new { Id = productId });
 
                 return rowsAffected;
             }
@@ -160,7 +160,7 @@ namespace DataAccess
             }
         }
 
-        public async Task<ProductEntity> GetProductById(Guid id)
+        public async Task<ProductEntity> GetProductById(Guid productId)
         {
             try
             {
@@ -168,7 +168,7 @@ namespace DataAccess
                 var product = await connection.QuerySingleAsync<ProductEntity>
                     (@"SELECT id, name, description, type, price, availability FROM 
                    products WHERE id = @Id",
-                    new { Id = id });
+                    new { Id = productId });
 
                 return (ProductEntity)product;
             }
@@ -253,13 +253,13 @@ namespace DataAccess
             }
         }
 
-        public async Task<int> DeleteBundle(Guid id)
+        public async Task<int> DeleteBundle(Guid bundleId)
         {
             try
             {
                 var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    ("DELETE FROM bundles WHERE id = @Id", new { Id = id });
+                    ("DELETE FROM bundles WHERE id = @Id", new { Id = bundleId });
 
                 return rowsAffected;
             }
@@ -270,7 +270,7 @@ namespace DataAccess
             }
         }
 
-        public async Task<BundleEntity> GetBundleById(Guid id)
+        public async Task<BundleEntity> GetBundleById(Guid bundleId)
         {
             try
             {
@@ -281,7 +281,7 @@ namespace DataAccess
                        LEFT JOIN bundle_products as bp ON b.id = bp.bundle_id
                        WHERE b.id = @Id
                        GROUP BY b.id",
-                       new { Id = id });
+                       new { Id = bundleId });
 
                 return (BundleEntity)bundle;
             }
@@ -393,13 +393,13 @@ namespace DataAccess
             }
         }
 
-        public async Task<int> DeleteDepartment(int id)
+        public async Task<int> DeleteDepartment(int departmentId)
         {
             try
             {
                 var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    ("DELETE FROM departments WHERE id = @Id", new { Id = id });
+                    ("DELETE FROM departments WHERE id = @Id", new { Id = departmentId });
 
                 return rowsAffected;
             }
@@ -410,14 +410,14 @@ namespace DataAccess
             }
         }
 
-        public async Task<DepartmentEntity> GetDepartmentById(int id)
+        public async Task<DepartmentEntity> GetDepartmentById(int departmentId)
         {
             try
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var department = await connection.QuerySingleAsync<DepartmentEntity>
                     (@"SELECT id, name, description FROM departments WHERE id = @Id",
-                    new { Id = id });
+                    new { Id = departmentId });
 
                 return (DepartmentEntity)department;
             }
@@ -485,13 +485,13 @@ namespace DataAccess
             }
         }
 
-        public async Task<int> DeleteProductType(int id)
+        public async Task<int> DeleteProductType(int productTypeId)
         {
             try
             {
                 var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    ("DELETE FROM product_types WHERE id = @Id", new { Id = id });
+                    ("DELETE FROM product_types WHERE id = @Id", new { Id = productTypeId });
 
                 return rowsAffected;
             }
@@ -502,14 +502,14 @@ namespace DataAccess
             }
         }
 
-        public async Task<ProductTypeEntity> GetProductTypeById(int id)
+        public async Task<ProductTypeEntity> GetProductTypeById(int productTypeId)
         {
             try
             {
                 using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var productType = await connection.QuerySingleAsync<ProductTypeEntity>
                     (@"SELECT id, name, department FROM product_types WHERE id = @Id",
-                    new { Id = id });
+                    new { Id = productTypeId });
 
                 return (ProductTypeEntity)productType;
             }
@@ -575,13 +575,13 @@ namespace DataAccess
                 return -1;
             }
         }
-        public async Task<int> DeleteUserItem(Guid id)
+        public async Task<int> DeleteUserItem(Guid userItemId)
         {
             try
             {
                 var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
                 var rowsAffected = await connection.ExecuteAsync
-                    ("DELETE FROM user_items WHERE id = @Id", new { Id = id });
+                    ("DELETE FROM user_items WHERE id = @Id", new { Id = userItemId });
 
                 return rowsAffected;
             }

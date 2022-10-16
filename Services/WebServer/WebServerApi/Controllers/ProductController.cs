@@ -32,17 +32,17 @@ namespace WebServerApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteProduct(Guid id)
+        public async Task<ActionResult> DeleteProduct(Guid productId)
         {
-            if (await _webServerService.DeleteProduct(id))
+            if (await _webServerService.DeleteProduct(productId))
                 return Ok();
             return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetProductDTO>> GetProduct(Guid id)
+        public async Task<ActionResult<GetProductDTO>> GetProduct(Guid productId)
         {
-            GetProductDTO productDTO = await _webServerService.GetProduct(id);
+            GetProductDTO productDTO = await _webServerService.GetProduct(productId);
             return Ok(productDTO);
         }
 

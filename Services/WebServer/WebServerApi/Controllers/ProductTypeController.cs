@@ -24,25 +24,25 @@ namespace WebServerApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateProductType(UpdateProductTypeDTO bundleDTO)
+        public async Task<ActionResult> UpdateProductType(UpdateProductTypeDTO productTypeDTO)
         {
-            if (await _webServerService.UpdateProductType(bundleDTO))
+            if (await _webServerService.UpdateProductType(productTypeDTO))
                 return Ok();
             return BadRequest();
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteProductType(int id)
+        public async Task<ActionResult> DeleteProductType(int productTypeId)
         {
-            if (await _webServerService.DeleteProductType(id))
+            if (await _webServerService.DeleteProductType(productTypeId))
                 return Ok();
             return BadRequest();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetProductTypeDTO>> GetProductType(int id)
+        public async Task<ActionResult<GetProductTypeDTO>> GetProductType(int productTypeId)
         {
-            GetProductTypeDTO bundleDTO = await _webServerService.GetProductType(id);
+            GetProductTypeDTO bundleDTO = await _webServerService.GetProductType(productTypeId);
             return Ok(bundleDTO);
         }
 
