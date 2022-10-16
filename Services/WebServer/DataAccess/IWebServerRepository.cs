@@ -75,5 +75,13 @@ namespace DataAccess
         Task<List<UserItemEntity>> GetNotReceivedUserItems(Guid userId);
 
         #endregion user item actions
+
+        #region user perk actions
+
+        Task<int> CreateUserPerk(UserPerkEntity userPerkEntity);
+        Task<int> DeleteUserPerk(Guid userPerkId);
+        Task<List<UserPerkEntity>> GetUserPerks(Guid userId);
+
+        #endregion user perk actions
     }
 }

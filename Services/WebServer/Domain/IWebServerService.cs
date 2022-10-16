@@ -63,5 +63,13 @@ namespace Domain
         Task<List<GetNotReceivedItemDTO>> GetNotReceivedUserItems(Guid userId);
 
         #endregion user item actions
+
+        #region user perk actions
+
+        Task<bool> CreateUserPerk(CreateUserPerkDTO userPerkDTO);
+        Task<bool> DeleteUserPerk(Guid userPerkId);
+        Task<List<GetUserPerkDTO>> GetUserPerks(Guid userId);
+
+        #endregion user perk actions
     }
 }

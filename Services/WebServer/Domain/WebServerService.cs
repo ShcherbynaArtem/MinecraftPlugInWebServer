@@ -370,5 +370,35 @@ namespace Domain
         }
 
         #endregion user item actions
+
+        #region user perk actions
+
+        public async Task<bool> CreateUserPerk(CreateUserPerkDTO userPerkDTO)
+        {
+            UserPerkEntity userPerkEntity = _mapper.Map<UserPerkEntity>(userPerkDTO);
+            int rowsAffected = await _webServerRepo.CreateUserPerk(userPerkEntity);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+        public async Task<bool> DeleteUserPerk(Guid userPerkId)
+        {
+            int rowsAffected = await _webServerRepo.DeleteUserPerk(userPerkId);
+            if (rowsAffected == 1)
+                return true;
+            return false;
+        }
+        public async Task<List<GetUserPerkDTO>> GetUserPerks(Guid userId)
+        {
+            List<UserPerkEntity> userPerksEntities = await _webServerRepo.GetUserPerks(userId);
+            List<GetUserPerkDTO> userPerkDTOs = new List<GetUserPerkDTO>();
+            foreach (UserPerkEntity userPerkEntity in userPerksEntities)
+            {
+                userPerkDTOs.Add(_mapper.Map<GetUserPerkDTO>(userPerkEntity));
+            }
+            return userPerkDTOs;
+        }
+
+        #endregion user perk actions
     }
 }

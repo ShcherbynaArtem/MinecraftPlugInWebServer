@@ -32,6 +32,9 @@ namespace Domain
             CreateMap<CreateUserItemDTO,     UserItemEntity>().ReverseMap();
             CreateMap<GetUserItemDTO,        UserItemEntity>().ReverseMap();
             CreateMap<GetNotReceivedItemDTO, UserItemEntity>().ReverseMap();
+
+            CreateMap<CreateUserPerkDTO, UserPerkEntity>().ReverseMap();
+            CreateMap<GetUserPerkDTO, UserPerkEntity>().ReverseMap();
         }
     }
 }

@@ -23,6 +23,10 @@ namespace DataAccess
             SqlMapper.SetTypeMap(typeof(UserItemEntity), new CustomPropertyTypeMap(
                 typeof(UserItemEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
                 prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
+
+            SqlMapper.SetTypeMap(typeof(UserPerkEntity), new CustomPropertyTypeMap(
+                typeof(UserPerkEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
+                prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
         }
 
         #region user actions
@@ -628,5 +632,60 @@ namespace DataAccess
         }
 
         #endregion user item actions
+
+        #region user perk actions
+
+        public async Task<int> CreateUserPerk(UserPerkEntity userPerkEntity)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                int rowsAffected = await connection.ExecuteAsync
+                    ("INSERT INTO user_perks (user_id, perk_id) VALUES (@UserId, @PerkId)",
+                    new { UserId = userPerkEntity.UserId, PerkId = userPerkEntity.PerkId });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+        public async Task<int> DeleteUserPerk(Guid userPerkId)
+        {
+            try
+            {
+                var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var rowsAffected = await connection.ExecuteAsync
+                    ("DELETE FROM user_perks WHERE id = @Id", new { Id = userPerkId });
+
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+        public async Task<List<UserPerkEntity>> GetUserPerks(Guid userId)
+        {
+            try
+            {
+                using var connection = new NpgsqlConnection(_configuration.GetConnectionString("Default"));
+                var userPerks = await connection.QueryAsync<UserPerkEntity>
+                    ("SELECT id, user_id, perk_id FROM user_perks WHERE user_id = @UserId",
+                    new { UserId = userId });
+
+                return (List<UserPerkEntity>)userPerks;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<UserPerkEntity>();
+            }
+        }
+
+        #endregion user perk actions
     }
 }
