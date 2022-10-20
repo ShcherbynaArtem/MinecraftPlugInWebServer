@@ -1,5 +1,5 @@
 ﻿using DataTransferObjects;
-using Domain;
+using Domain.DepartmentService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebServerApi.Controllers
@@ -8,17 +8,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class DepartmentController : ControllerBase
     {
-        private readonly IWebServerService _webServerService;
+        private readonly IDepartmentService _departmentService;
 
-        public DepartmentController(IWebServerService webServerService)
+        public DepartmentController(IDepartmentService departmentService)
         {
-            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
+            _departmentService = departmentService ?? throw new ArgumentNullException(nameof(departmentService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateDepartment(CreateDepartmentDTO departmentDTO)
         {
-            if(await _webServerService.CreateDepartment(departmentDTO))
+            if(await _departmentService.CreateDepartment(departmentDTO))
                 return Ok();
             return BadRequest();
         }
@@ -26,7 +26,7 @@ namespace WebServerApi.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateDepartment(UpdateDepartmentDTO departmentDTO)
         {
-            if(await _webServerService.UpdateDepartment(departmentDTO))
+            if(await _departmentService.UpdateDepartment(departmentDTO))
                 return Ok();
             return BadRequest();
         }
@@ -34,7 +34,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteDepartment(int departmentId)
         {
-            if(await _webServerService.DeleteDepartment(departmentId))
+            if(await _departmentService.DeleteDepartment(departmentId))
                 return Ok();
             return BadRequest();
         }
@@ -42,14 +42,14 @@ namespace WebServerApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetDepartmentDTO>> GetDepartment(int departmentId)
         {
-            GetDepartmentDTO departmentDTO = await _webServerService.GetDepartment(departmentId);
+            GetDepartmentDTO departmentDTO = await _departmentService.GetDepartment(departmentId);
             return Ok(departmentDTO);
         }
 
         [HttpGet]
         public async Task<ActionResult<GetDepartmentDTO>> GetDepartments()
         {
-            List<GetDepartmentDTO> departmentDTOs = await _webServerService.GetDepartments();
+            List<GetDepartmentDTO> departmentDTOs = await _departmentService.GetDepartments();
             return Ok(departmentDTOs);
         }
     }

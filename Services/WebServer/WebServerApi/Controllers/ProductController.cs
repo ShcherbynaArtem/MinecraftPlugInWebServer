@@ -1,5 +1,5 @@
 ﻿using DataTransferObjects;
-using Domain;
+using Domain.ProductService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebServerApi.Controllers
@@ -8,17 +8,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly IWebServerService _webServerService;
+        private readonly IProductService _productService;
 
-        public ProductController(IWebServerService webServerService)
+        public ProductController(IProductService productService)
         {
-            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateProduct(CreateProductDTO productDTO)
         {
-            if (await _webServerService.CreateProduct(productDTO))
+            if (await _productService.CreateProduct(productDTO))
                 return Ok();
             return BadRequest();
         }
@@ -26,7 +26,7 @@ namespace WebServerApi.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateProduct(UpdateProductDTO productDTO)
         {
-            if (await _webServerService.UpdateProduct(productDTO))
+            if (await _productService.UpdateProduct(productDTO))
                 return Ok();
             return BadRequest();
         }
@@ -34,7 +34,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteProduct(Guid productId)
         {
-            if (await _webServerService.DeleteProduct(productId))
+            if (await _productService.DeleteProduct(productId))
                 return Ok();
             return BadRequest();
         }
@@ -42,14 +42,14 @@ namespace WebServerApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetProductDTO>> GetProduct(Guid productId)
         {
-            GetProductDTO productDTO = await _webServerService.GetProduct(productId);
+            GetProductDTO productDTO = await _productService.GetProduct(productId);
             return Ok(productDTO);
         }
 
         [HttpGet]
         public async Task<ActionResult<GetProductDTO>> GetProducts()
         {
-            List<GetProductDTO> productDTOs = await _webServerService.GetProducts();
+            List<GetProductDTO> productDTOs = await _productService.GetProducts();
             return Ok(productDTOs);
         }
 
@@ -57,7 +57,7 @@ namespace WebServerApi.Controllers
         [Route("Available")]
         public async Task<ActionResult<GetAvailableProductDTO>> GetAvailableProducts()
         {
-            List<GetAvailableProductDTO> productDTOs = await _webServerService.GetAvailableProducts();
+            List<GetAvailableProductDTO> productDTOs = await _productService.GetAvailableProducts();
             return Ok(productDTOs);
         }
     }

@@ -1,5 +1,12 @@
 using DataAccess;
 using Domain;
+using Domain.BundleService;
+using Domain.DepartmentService;
+using Domain.ProductService;
+using Domain.ProductTypeService;
+using Domain.UserItemService;
+using Domain.UserPerkService;
+using Domain.UserService;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -26,7 +33,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IWebServerRepository, WebServerRepository>();
-builder.Services.AddScoped<IWebServerService, WebServerService>();
+builder.Services.AddScoped<IBundleService, BundleService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductTypeService, ProductTypeService>();
+builder.Services.AddScoped<IUserItemService, UserItemService>();
+builder.Services.AddScoped<IUserPerkService, UserPerkService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddAuthentication("Bearer")

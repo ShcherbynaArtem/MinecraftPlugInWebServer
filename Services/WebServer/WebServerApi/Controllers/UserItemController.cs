@@ -1,5 +1,6 @@
 ﻿using DataTransferObjects;
 using Domain;
+using Domain.UserItemService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebServerApi.Controllers
@@ -8,17 +9,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class UserItemController : ControllerBase
     {
-        private readonly IWebServerService _webServerService;
+        private readonly IUserItemService _userItemService;
 
-        public UserItemController(IWebServerService webServerService)
+        public UserItemController(IUserItemService userItemService)
         {
-            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
+            _userItemService = userItemService ?? throw new ArgumentNullException(nameof(userItemService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateUserItem(CreateUserItemDTO userItemDTO)
         {
-            if (await _webServerService.CreateUserItem(userItemDTO))
+            if (await _userItemService.CreateUserItem(userItemDTO))
                 return Ok();
             return BadRequest();
         }
@@ -26,7 +27,7 @@ namespace WebServerApi.Controllers
         [HttpPut]
         public async Task<ActionResult> MarkUserItemAsReceived(Guid userItemId)
         {
-            if (await _webServerService.MarkUserItemAsReceived(userItemId))
+            if (await _userItemService.MarkUserItemAsReceived(userItemId))
                 return Ok();
             return BadRequest();
         }
@@ -34,7 +35,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUserItem(Guid userItemId)
         {
-            if (await _webServerService.DeleteUserItem(userItemId))
+            if (await _userItemService.DeleteUserItem(userItemId))
                 return Ok();
             return BadRequest();
         }
@@ -42,7 +43,7 @@ namespace WebServerApi.Controllers
         [HttpGet]
         public async Task<ActionResult<GetUserItemDTO>> GetUserItems(Guid userId)
         {
-            List<GetUserItemDTO> userItemDTOs = await _webServerService.GetUserItems(userId);
+            List<GetUserItemDTO> userItemDTOs = await _userItemService.GetUserItems(userId);
             return Ok(userItemDTOs);
         }
 
@@ -50,7 +51,7 @@ namespace WebServerApi.Controllers
         [Route("Available")]
         public async Task<ActionResult<GetNotReceivedItemDTO>> GetNotReceivedUserItems(Guid userId)
         {
-            List<GetNotReceivedItemDTO> userItemDTOs = await _webServerService.GetNotReceivedUserItems(userId);
+            List<GetNotReceivedItemDTO> userItemDTOs = await _userItemService.GetNotReceivedUserItems(userId);
             return Ok(userItemDTOs);
         }
     }

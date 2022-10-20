@@ -1,5 +1,6 @@
 ﻿using DataTransferObjects;
 using Domain;
+using Domain.UserPerkService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebServerApi.Controllers
@@ -8,17 +9,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class UserPerkController : ControllerBase
     {
-        private readonly IWebServerService _webServerService;
+        private readonly IUserPerkService _userPerkService;
 
-        public UserPerkController(IWebServerService webServerService)
+        public UserPerkController(IUserPerkService userPerkService)
         {
-            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
+            _userPerkService = userPerkService ?? throw new ArgumentNullException(nameof(userPerkService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateUserPerk(CreateUserPerkDTO userPerkDTO)
         {
-            if (await _webServerService.CreateUserPerk(userPerkDTO))
+            if (await _userPerkService.CreateUserPerk(userPerkDTO))
                 return Ok();
             return BadRequest();
         }
@@ -26,7 +27,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUserPerk(Guid userPerkId)
         {
-            if (await _webServerService.DeleteUserPerk(userPerkId))
+            if (await _userPerkService.DeleteUserPerk(userPerkId))
                 return Ok();
             return BadRequest();
         }
@@ -34,7 +35,7 @@ namespace WebServerApi.Controllers
         [HttpGet]
         public async Task<ActionResult<GetUserPerkDTO>> GetUserPerks(Guid userId)
         {
-            List<GetUserPerkDTO> userPerkDTOs = await _webServerService.GetUserPerks(userId);
+            List<GetUserPerkDTO> userPerkDTOs = await _userPerkService.GetUserPerks(userId);
             return Ok(userPerkDTOs);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using DataTransferObjects;
 using Domain;
+using Domain.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -10,17 +11,17 @@ namespace WebServerApi.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IWebServerService _webServerService;
+        private readonly IUserService _userService;
 
-        public UserController(IWebServerService webServerService)
+        public UserController(IUserService userService)
         {
-            _webServerService = webServerService ?? throw new ArgumentNullException(nameof(webServerService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateUser(CreateUserDTO userDTO)
         {
-            if (await _webServerService.CreateUser(userDTO))
+            if (await _userService.CreateUser(userDTO))
                 return Ok();
             return BadRequest();
         }
@@ -28,7 +29,7 @@ namespace WebServerApi.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateUser(UpdateUserDTO userDTO)
         {
-            if (await _webServerService.UpdateUser(userDTO))
+            if (await _userService.UpdateUser(userDTO))
                 return Ok();
             return BadRequest();
         }
@@ -36,7 +37,7 @@ namespace WebServerApi.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUser(Guid userId)
         {
-            if (await _webServerService.DeleteUser(userId))
+            if (await _userService.DeleteUser(userId))
                 return Ok();
             return BadRequest();
         }
@@ -44,7 +45,7 @@ namespace WebServerApi.Controllers
         [HttpGet]
         public async Task<ActionResult<GetUserDTO>> GetUser(Guid userId)
         {
-            GetUserDTO userDTO = await _webServerService.GetUser(userId);
+            GetUserDTO userDTO = await _userService.GetUser(userId);
             return Ok(userDTO);
         }
     }
