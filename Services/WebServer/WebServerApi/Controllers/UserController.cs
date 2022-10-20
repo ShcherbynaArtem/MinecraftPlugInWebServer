@@ -1,9 +1,6 @@
-﻿using DataTransferObjects;
-using Domain;
+﻿using DataTransferObjects.UserDTOs;
 using Domain.UserService;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace WebServerApi.Controllers
 {

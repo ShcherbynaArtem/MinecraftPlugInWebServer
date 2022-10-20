@@ -1,4 +1,4 @@
-﻿namespace DataTransferObjects
+﻿namespace DataTransferObjects.UserPerkDTOs
 {
     public class GetUserPerkDTO
     {

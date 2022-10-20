@@ -1,4 +1,4 @@
-﻿using DataTransferObjects;
+﻿using DataTransferObjects.DepartmentDTOs;
 using Domain.DepartmentService;
 using Microsoft.AspNetCore.Mvc;
 

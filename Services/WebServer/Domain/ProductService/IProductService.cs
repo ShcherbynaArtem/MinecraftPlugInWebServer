@@ -1,4 +1,4 @@
-﻿using DataTransferObjects;
+﻿using DataTransferObjects.ProductDTOs;
 
 namespace Domain.ProductService
 {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using DataAccess;
-using DataTransferObjects;
+using DataAccess.ProductTypeRepository;
+using DataTransferObjects.ProductTypeDTOs;
 using Entities;
 
 namespace Domain.ProductTypeService
@@ -8,16 +8,16 @@ namespace Domain.ProductTypeService
     public class ProductTypeService : IProductTypeService
     {
         private readonly IMapper _mapper;
-        private readonly IWebServerRepository _webServerRepo;
-        public ProductTypeService(IWebServerRepository appServerRepo, IMapper mapper)
+        private readonly IProductTypeRepository _productTypeRepository;
+        public ProductTypeService(IProductTypeRepository productTypeRepository, IMapper mapper)
         {
-            _webServerRepo = appServerRepo ?? throw new ArgumentNullException(nameof(appServerRepo));
+            _productTypeRepository = productTypeRepository ?? throw new ArgumentNullException(nameof(productTypeRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<bool> CreateProductType(CreateProductTypeDTO productTypeDTO)
         {
             ProductTypeEntity productTypeEntity = _mapper.Map<ProductTypeEntity>(productTypeDTO);
-            int rowsAffected = await _webServerRepo.CreateProductType(productTypeEntity);
+            int rowsAffected = await _productTypeRepository.CreateProductType(productTypeEntity);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -26,7 +26,7 @@ namespace Domain.ProductTypeService
         public async Task<bool> UpdateProductType(UpdateProductTypeDTO productTypeDTO)
         {
             ProductTypeEntity productTypeEntity = _mapper.Map<ProductTypeEntity>(productTypeDTO);
-            int rowsAffected = await _webServerRepo.UpdateProductType(productTypeEntity);
+            int rowsAffected = await _productTypeRepository.UpdateProductType(productTypeEntity);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -34,7 +34,7 @@ namespace Domain.ProductTypeService
 
         public async Task<bool> DeleteProductType(int productTypeId)
         {
-            int rowsAffected = await _webServerRepo.DeleteProductType(productTypeId);
+            int rowsAffected = await _productTypeRepository.DeleteProductType(productTypeId);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -42,7 +42,7 @@ namespace Domain.ProductTypeService
 
         public async Task<GetProductTypeDTO> GetProductType(int productTypeId)
         {
-            ProductTypeEntity productTypeEntity = await _webServerRepo.GetProductTypeById(productTypeId);
+            ProductTypeEntity productTypeEntity = await _productTypeRepository.GetProductTypeById(productTypeId);
             if (!string.IsNullOrEmpty(productTypeEntity.Name))
             {
                 GetProductTypeDTO productTypeDTO = _mapper.Map<GetProductTypeDTO>(productTypeEntity);
@@ -53,7 +53,7 @@ namespace Domain.ProductTypeService
 
         public async Task<List<GetProductTypeDTO>> GetProductTypes()
         {
-            List<ProductTypeEntity> productTypeEntities = await _webServerRepo.GetProductTypes();
+            List<ProductTypeEntity> productTypeEntities = await _productTypeRepository.GetProductTypes();
             List<GetProductTypeDTO> productTypeDTOs = new List<GetProductTypeDTO>();
             foreach (ProductTypeEntity productTypeEntity in productTypeEntities)
             {

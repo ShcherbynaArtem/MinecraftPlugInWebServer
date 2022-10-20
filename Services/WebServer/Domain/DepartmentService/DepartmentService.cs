@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using DataAccess;
-using DataTransferObjects;
+using DataAccess.DepartmentRepository;
+using DataTransferObjects.DepartmentDTOs;
 using Entities;
 
 namespace Domain.DepartmentService
@@ -8,16 +8,16 @@ namespace Domain.DepartmentService
     public class DepartmentService : IDepartmentService
     {
         private readonly IMapper _mapper;
-        private readonly IWebServerRepository _webServerRepo;
-        public DepartmentService(IWebServerRepository appServerRepo, IMapper mapper)
+        private readonly IDepartmentRepository _departmentRepository;
+        public DepartmentService(IDepartmentRepository departmentRepository, IMapper mapper)
         {
-            _webServerRepo = appServerRepo ?? throw new ArgumentNullException(nameof(appServerRepo));
+            _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<bool> CreateDepartment(CreateDepartmentDTO departmentDTO)
         {
             DepartmentEntity departmentEntity = _mapper.Map<DepartmentEntity>(departmentDTO);
-            int rowsAffected = await _webServerRepo.CreateDepartment(departmentEntity);
+            int rowsAffected = await _departmentRepository.CreateDepartment(departmentEntity);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -25,7 +25,7 @@ namespace Domain.DepartmentService
 
         public async Task<GetDepartmentDTO> GetDepartment(int departmentId)
         {
-            DepartmentEntity departmentEntity = await _webServerRepo.GetDepartmentById(departmentId);
+            DepartmentEntity departmentEntity = await _departmentRepository.GetDepartmentById(departmentId);
             if (!string.IsNullOrEmpty(departmentEntity.Name))
             {
                 GetDepartmentDTO departmentDTO = _mapper.Map<GetDepartmentDTO>(departmentEntity);
@@ -37,7 +37,7 @@ namespace Domain.DepartmentService
         public async Task<bool> UpdateDepartment(UpdateDepartmentDTO departmentDTO)
         {
             DepartmentEntity departmentEntity = _mapper.Map<DepartmentEntity>(departmentDTO);
-            int rowsAffected = await _webServerRepo.UpdateDepartment(departmentEntity);
+            int rowsAffected = await _departmentRepository.UpdateDepartment(departmentEntity);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -45,7 +45,7 @@ namespace Domain.DepartmentService
 
         public async Task<bool> DeleteDepartment(int departmentId)
         {
-            int rowsAffected = await _webServerRepo.DeleteDepartment(departmentId);
+            int rowsAffected = await _departmentRepository.DeleteDepartment(departmentId);
             if (rowsAffected == 1)
                 return true;
             return false;
@@ -53,7 +53,7 @@ namespace Domain.DepartmentService
 
         public async Task<List<GetDepartmentDTO>> GetDepartments()
         {
-            List<DepartmentEntity> departmentEntities = await _webServerRepo.GetDepartments();
+            List<DepartmentEntity> departmentEntities = await _departmentRepository.GetDepartments();
             List<GetDepartmentDTO> departmentDTOs = new List<GetDepartmentDTO>();
             foreach (DepartmentEntity departmentEntity in departmentEntities)
             {

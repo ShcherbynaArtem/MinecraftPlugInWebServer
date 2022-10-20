@@ -1,4 +1,11 @@
-using DataAccess;
+using DataAccess.BundleProductRepository;
+using DataAccess.BundleRepository;
+using DataAccess.DepartmentRepository;
+using DataAccess.ProductRepository;
+using DataAccess.ProductTypeRepository;
+using DataAccess.UserItemRepository;
+using DataAccess.UserPerkRepository;
+using DataAccess.UserRepository;
 using Domain;
 using Domain.BundleService;
 using Domain.DepartmentService;
@@ -32,7 +39,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddScoped<IWebServerRepository, WebServerRepository>();
+
+builder.Services.AddScoped<IBundleRepository, BundleRepository>();
+builder.Services.AddScoped<IBundleProductRepository, BundleProductRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+builder.Services.AddScoped<IUserItemRepository, UserItemRepository>();
+builder.Services.AddScoped<IUserPerkRepository, UserPerkRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<IBundleService, BundleService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -40,6 +56,7 @@ builder.Services.AddScoped<IProductTypeService, ProductTypeService>();
 builder.Services.AddScoped<IUserItemService, UserItemService>();
 builder.Services.AddScoped<IUserPerkService, UserPerkService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddAuthentication("Bearer")

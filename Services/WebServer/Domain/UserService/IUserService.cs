@@ -1,4 +1,4 @@
-﻿using DataTransferObjects;
+﻿using DataTransferObjects.UserDTOs;
 
 namespace Domain.UserService
 {

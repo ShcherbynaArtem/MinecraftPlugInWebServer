@@ -1,5 +1,4 @@
-﻿using DataTransferObjects;
-using Domain;
+﻿using DataTransferObjects.UserItemDTOs;
 using Domain.UserItemService;
 using Microsoft.AspNetCore.Mvc;
 

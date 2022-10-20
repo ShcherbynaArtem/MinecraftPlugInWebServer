@@ -1,5 +1,4 @@
-﻿using DataTransferObjects;
-using Domain;
+﻿using DataTransferObjects.UserPerkDTOs;
 using Domain.UserPerkService;
 using Microsoft.AspNetCore.Mvc;
 

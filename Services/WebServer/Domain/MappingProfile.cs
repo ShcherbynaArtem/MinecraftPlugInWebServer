@@ -1,6 +1,12 @@
 ﻿using AutoMapper;
-using DataTransferObjects;
 using Entities;
+using DataTransferObjects.BundleDTOs;
+using DataTransferObjects.DepartmentDTOs;
+using DataTransferObjects.ProductDTOs;
+using DataTransferObjects.ProductTypeDTOs;
+using DataTransferObjects.UserDTOs;
+using DataTransferObjects.UserItemDTOs;
+using DataTransferObjects.UserPerkDTOs;
 
 namespace Domain
 {

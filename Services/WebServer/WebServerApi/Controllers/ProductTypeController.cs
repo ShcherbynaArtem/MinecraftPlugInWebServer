@@ -1,4 +1,4 @@
-﻿using DataTransferObjects;
+﻿using DataTransferObjects.ProductTypeDTOs;
 using Domain.ProductTypeService;
 using Microsoft.AspNetCore.Mvc;
 

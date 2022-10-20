@@ -1,4 +1,4 @@
-﻿using DataTransferObjects;
+﻿using DataTransferObjects.BundleDTOs;
 using Domain.BundleService;
 using Microsoft.AspNetCore.Mvc;
 

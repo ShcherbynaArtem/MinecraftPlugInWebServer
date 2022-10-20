@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using DataAccess;
-using DataTransferObjects;
+using DataAccess.BundleProductRepository;
+using DataAccess.BundleRepository;
+using DataTransferObjects.BundleDTOs;
 using Entities;
 
 namespace Domain.BundleService
@@ -8,16 +9,20 @@ namespace Domain.BundleService
     public class BundleService : IBundleService
     {
         private readonly IMapper _mapper;
-        private readonly IWebServerRepository _webServerRepo;
-        public BundleService(IWebServerRepository appServerRepo, IMapper mapper)
+        private readonly IBundleRepository _bundleRepository;
+        private readonly IBundleProductRepository _bundleProductRepository;
+        public BundleService(IBundleRepository bundleRepository,
+                             IBundleProductRepository bundleProductRepository,
+                             IMapper mapper)
         {
-            _webServerRepo = appServerRepo ?? throw new ArgumentNullException(nameof(appServerRepo));
+            _bundleRepository = bundleRepository ?? throw new ArgumentNullException(nameof(bundleRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _bundleProductRepository = bundleProductRepository ?? throw new ArgumentNullException(nameof(bundleProductRepository));
         }
         public async Task<bool> CreateBundle(CreateBundleDTO bundleDTO)
         {
             BundleEntity bundleEntity = _mapper.Map<BundleEntity>(bundleDTO);
-            Guid createdBundleId = await _webServerRepo.CreateBundle(bundleEntity);
+            Guid createdBundleId = await _bundleRepository.CreateBundle(bundleEntity);
             if (createdBundleId == Guid.Empty)
                 return false;
 
@@ -32,7 +37,7 @@ namespace Domain.BundleService
         public async Task<bool> UpdateBundle(UpdateBundleDTO bundleDTO)
         {
             BundleEntity bundleEntity = _mapper.Map<BundleEntity>(bundleDTO);
-            int rowsAffected = await _webServerRepo.UpdateBundle(bundleEntity);
+            int rowsAffected = await _bundleRepository.UpdateBundle(bundleEntity);
             if (rowsAffected != 1)
                 return false;
 
@@ -44,7 +49,7 @@ namespace Domain.BundleService
 
         public async Task<bool> DeleteBundle(Guid bundleId)
         {
-            int rowsAffected = await _webServerRepo.DeleteBundle(bundleId);
+            int rowsAffected = await _bundleRepository.DeleteBundle(bundleId);
             if (rowsAffected == 0)
                 return false;
             return true;
@@ -52,7 +57,7 @@ namespace Domain.BundleService
 
         public async Task<GetBundleDTO> GetBundle(Guid bundleId)
         {
-            BundleEntity bundleEntity = await _webServerRepo.GetBundleById(bundleId);
+            BundleEntity bundleEntity = await _bundleRepository.GetBundleById(bundleId);
             if (!string.IsNullOrEmpty(bundleEntity.Name))
             {
                 GetBundleDTO bundleDTO = _mapper.Map<GetBundleDTO>(bundleEntity);
@@ -63,7 +68,7 @@ namespace Domain.BundleService
 
         public async Task<List<GetBundleDTO>> GetBundles()
         {
-            List<BundleEntity> bundleEntities = await _webServerRepo.GetBundles();
+            List<BundleEntity> bundleEntities = await _bundleRepository.GetBundles();
             List<GetBundleDTO> bundleDTOs = new List<GetBundleDTO>();
             foreach (BundleEntity bundleEntity in bundleEntities)
             {
@@ -92,7 +97,7 @@ namespace Domain.BundleService
                 bundleProductEntities.Add(new BundleProductEntity(bundleId, productId));
             }
 
-            var rowsAffected = await _webServerRepo.AddProductsToBundle(bundleProductEntities);
+            var rowsAffected = await _bundleProductRepository.AddProductsToBundle(bundleProductEntities);
             if (rowsAffected != 0)
                 return true;
             return false;
@@ -100,7 +105,7 @@ namespace Domain.BundleService
 
         private async Task<bool> DeleteProductsFromBundle(Guid bundleId)
         {
-            int rowsAffected = await _webServerRepo.DeleteProductsFromBundle(bundleId);
+            int rowsAffected = await _bundleProductRepository.DeleteProductsFromBundle(bundleId);
             if (rowsAffected >= 0)
                 return true;
             return false;
