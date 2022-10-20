@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using System.ComponentModel.DataAnnotations.Schema;
 using Z.Dapper.Plus;
@@ -10,12 +11,19 @@ namespace DataAccess
     public class WebServerRepository : IWebServerRepository
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger<WebServerRepository> _logger;
 
-        public WebServerRepository(IConfiguration configuration)
+        public WebServerRepository(IConfiguration configuration, ILogger<WebServerRepository> logger)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            MapSqlColumns();
+        }
 
-            //Map column names with property names
+        #region common
+
+        private void MapSqlColumns()
+        {
             SqlMapper.SetTypeMap(typeof(BundleProductEntity), new CustomPropertyTypeMap(
                 typeof(BundleProductEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
                 prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
@@ -28,6 +36,8 @@ namespace DataAccess
                 typeof(UserPerkEntity), (type, columnName) => type.GetProperties().FirstOrDefault(prop =>
                 prop.GetCustomAttributes(false).OfType<ColumnAttribute>().Any(attr => attr.Name == columnName))));
         }
+
+        #endregion common
 
         #region user actions
 
@@ -44,7 +54,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while CreateUser query");
                 return -1;
             }
         }
@@ -63,7 +73,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while UpdateUser query");
                 return -1;
             }
         }
@@ -80,7 +90,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteUser query");
                 return -1;
             }
         }
@@ -99,7 +109,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetUserById query");
                 return new UserEntity();
             }
         }
@@ -121,7 +131,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while CreateProduct query");
                 return -1;
             }
         }
@@ -142,7 +152,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while UpdateProduct query");
                 return -1;
             }
         }
@@ -159,7 +169,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteProduct query");
                 return -1;
             }
         }
@@ -178,7 +188,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetProductById query");
                 return new ProductEntity();
             }
         }
@@ -195,7 +205,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetProducts query");
                 return new List<ProductEntity>();
             }
         }
@@ -212,7 +222,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetAvailableProducts query");
                 return new List<ProductEntity>();
             }
         }
@@ -234,7 +244,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while CreateBundle query");
                 return Guid.Empty;
             }
         }
@@ -252,7 +262,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while UpdateBundle query");
                 return -1;
             }
         }
@@ -269,7 +279,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteBundle query");
                 return -1;
             }
         }
@@ -291,7 +301,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetBundleById query");
                 return new BundleEntity();
             }
             
@@ -312,7 +322,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex,"Exception while GetBundles query");
                 return new List<BundleEntity>();
             }
         }
@@ -334,7 +344,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while AddProductsToBundle query");
                 return -1;
             }
         }
@@ -352,7 +362,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteProductsFromBundle query");
                 return -1;
             }
         }
@@ -374,7 +384,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while CreateDepartment query");
                 return -1;
             }
         }
@@ -392,7 +402,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while UpdateDepartment query");
                 return -1;
             }
         }
@@ -409,7 +419,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteDepartment query");
                 return -1;
             }
         }
@@ -427,7 +437,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetDepartmentById query");
                 return new DepartmentEntity();
             }
         }
@@ -444,7 +454,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetDepartments query");
                 return new List<DepartmentEntity>();
             }
         }
@@ -466,7 +476,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while CreateProductType query");
                 return -1;
             }
         }
@@ -484,7 +494,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while UpdateProductType query");
                 return -1;
             }
         }
@@ -501,7 +511,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteProductType query");
                 return -1;
             }
         }
@@ -519,7 +529,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetProductTypeById query");
                 return new ProductTypeEntity();
             }
         }
@@ -536,7 +546,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetProductTypes query");
                 return new List<ProductTypeEntity>();
             }
         }
@@ -558,7 +568,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while CreateUserItem query");
                 return -1;
             }
         }
@@ -575,7 +585,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while MarkUserItemAsReceived query");
                 return -1;
             }
         }
@@ -591,7 +601,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteUserItem query");
                 return -1;
             }
         }
@@ -608,7 +618,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetUserItems query");
                 return new List<UserItemEntity>();
             }
         }
@@ -626,7 +636,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetNotReceivedUserItems query");
                 return new List<UserItemEntity>();
             }
         }
@@ -648,7 +658,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while CreateUserPerk query");
                 return -1;
             }
         }
@@ -664,7 +674,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while DeleteUserPerk query");
                 return -1;
             }
         }
@@ -681,7 +691,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError(ex, "Exception while GetUserPerks query");
                 return new List<UserPerkEntity>();
             }
         }

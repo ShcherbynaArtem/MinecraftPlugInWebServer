@@ -1,42 +1,73 @@
 version: '3.4'
 
 services:
-  identity.db:
-    container_name: identity.db
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: 2283221488
-      POSTGRES_USER: identity_db_user
-      POSTGRES_DB: identity_db
-    volumes:
-      - ./identity-db-data:/var/lib/postgresql/data
-      - ./init-identity-db:/docker-entrypoint-initdb.d
-    ports:
-      - "5433:5432"
+    identity.db:
+        container_name: identity.db
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: 2283221488
+            POSTGRES_USER: identity_db_user
+            POSTGRES_DB: identity_db
+        volumes:
+            - ./identity-db-data:/var/lib/postgresql/data
+            - ./init-identity-db:/docker-entrypoint-initdb.d
+        ports:
+            - "5433:5432"
       
-  web.server.db:
-    container_name: web.server.db
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: 2283221488
-      POSTGRES_USER: web_server_db_user
-      POSTGRES_DB: web_server_db
-    volumes:
-      - ./web-server-db-data:/var/lib/postgresql/data
-      - ./init-web-server-db:/docker-entrypoint-initdb.d
-    ports:
-      - "5434:5432"
+    web.server.db:
+        container_name: web.server.db
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: 2283221488
+            POSTGRES_USER: web_server_db_user
+            POSTGRES_DB: web_server_db
+        volumes:
+            - ./web-server-db-data:/var/lib/postgresql/data
+            - ./init-web-server-db:/docker-entrypoint-initdb.d
+        ports:
+            - "5434:5432"
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-    restart: always
-    ports:
-      - '5050:80'
-    volumes:
-      - ./pgadmin_data:/var/lib/pgadmin
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+            - PGADMIN_DEFAULT_PASSWORD=admin
+        restart: always
+        ports:
+            - '5050:80'
+        volumes:
+            - ./pgadmin_data:/var/lib/pgadmin
+      
+    elasticsearch:  
+        container_name: elasticsearch  
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+        ports:  
+            - 9200:9200
+        volumes:  
+            - ./elasticsearch-data:/usr/share/elasticsearch/data
+        environment:
+            - xpack.monitoring.enabled=true
+            - xpack.watcher.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            - discovery.type=single-node
+        networks:
+            - elastic
+
+    kibana:
+        container_name: kibana
+        image: docker.elastic.co/kibana/kibana:7.9.1
+        ports:
+            - 5601:5601
+        depends_on:
+            - elasticsearch
+        environment:
+            - ELASTICSEARCH_URL=http://localhost:9200
+        networks:
+            - elastic
+        
+networks:
+    elastic:
+        driver: bridge
