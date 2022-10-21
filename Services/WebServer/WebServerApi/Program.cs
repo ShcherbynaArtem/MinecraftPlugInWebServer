@@ -6,6 +6,7 @@ using DataAccess.ProductTypeRepository;
 using DataAccess.UserItemRepository;
 using DataAccess.UserPerkRepository;
 using DataAccess.UserRepository;
+using DataTransferObjects.UserDTOs;
 using Domain;
 using Domain.BundleService;
 using Domain.DepartmentService;
@@ -14,6 +15,8 @@ using Domain.ProductTypeService;
 using Domain.UserItemService;
 using Domain.UserPerkService;
 using Domain.UserService;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -56,6 +59,10 @@ builder.Services.AddScoped<IProductTypeService, ProductTypeService>();
 builder.Services.AddScoped<IUserItemService, UserItemService>();
 builder.Services.AddScoped<IUserPerkService, UserPerkService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+ValidatorOptions.Global.LanguageManager.Enabled = false;
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserDTOValidator>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
